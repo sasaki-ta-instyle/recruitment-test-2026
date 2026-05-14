@@ -1,7 +1,12 @@
-import Link from "next/link";
 import { Logo } from "@/app/_components/Logo";
+import { WindowGate } from "@/app/_components/WindowGate";
+import { getTestWindowSnapshot } from "@/lib/testWindow";
 
-export default function HomePage() {
+export const dynamic = "force-dynamic";
+
+export default async function HomePage() {
+  const snap = await getTestWindowSnapshot();
+
   return (
     <main className="app-shell">
       <div className="landing">
@@ -12,9 +17,13 @@ export default function HomePage() {
           下のボタンからテストを開始してください。
         </p>
         <div className="landing-cta">
-          <Link href="/test" className="btn-primary" style={{ textAlign: "center", textDecoration: "none" }}>
-            テストを開始する
-          </Link>
+          <WindowGate
+            status={snap.status}
+            openAt={snap.openAt}
+            closeAt={snap.closeAt}
+            message={snap.message}
+            serverNowMs={snap.nowMs}
+          />
         </div>
       </div>
     </main>

@@ -73,6 +73,18 @@ model QuestionNote {
   @@index([candidateId])
 }
 
+// テスト受験時間の窓（シングルトン: id="singleton" の 1 行のみ運用）。
+// openAt〜closeAt の間だけ受験者がテストを開始できる。closeAt 到達時は
+// 進行中の回答も強制提出して終了する。null の場合は「常時閉鎖」とみなす。
+model TestWindow {
+  id        String    @id @default("singleton")
+  openAt    DateTime?
+  closeAt   DateTime?
+  // 受験者ページに出すアナウンス（任意）
+  message   String?
+  updatedAt DateTime  @updatedAt
+}
+
 model Score {
   id             String    @id @default(cuid())
   candidate      Candidate @relation(fields: [candidateId], references: [id], onDelete: Cascade)
