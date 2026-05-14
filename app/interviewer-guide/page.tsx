@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { TYPE_MAP, VERDICT_LABEL } from "@/lib/scoring";
 import { Logo } from "@/app/_components/Logo";
 
@@ -16,11 +17,14 @@ const TYPE_ORDER = [
 export default function InterviewerGuidePage() {
   return (
     <main className="wide-shell">
+      <div className="no-print admin-detail-nav" style={{ marginBottom: 12 }}>
+        <Link href="/admin">← 受験者ダッシュボード</Link>
+      </div>
       <header style={{ marginBottom: 24 }}>
         <Logo height={14} />
         <h1 style={{ fontSize: "1.625rem", marginTop: 8 }}>採用カルチャーテスト 2026 面接官ガイド</h1>
         <p style={{ fontSize: "0.9375rem", color: "var(--color-text-muted)", marginTop: 8, lineHeight: 1.8 }}>
-          v6（ipsative 4 選択肢 × 4 軸 × 16 タイプ）。Part 1 は性格傾向の自動判定、Part 2 は INSTYLE 思想との接続度の人手採点。
+          v6（イプサティブ評価 4 選択肢 × 4 軸 × 16 タイプ）。Part 1 は性格傾向の自動判定、Part 2 は INSTYLE 思想との接続度の人手採点。
         </p>
       </header>
 
@@ -30,7 +34,7 @@ export default function InterviewerGuidePage() {
         <h2>採点の基本方針</h2>
         <p className="section-desc">
           このテストは「正解探し」ではなく、入社後の働き方・チームへの影響を予測するためのパーソナリティ診断です。
-          Part 1 は <b>ipsative 形式（4 選択肢から「最も近い」と「最も遠い」を 1 つずつ選ぶ）</b>で 4 軸の傾向を測り、16 タイプに分類します。
+          Part 1 は <b>イプサティブ評価形式（4 選択肢から「最も近い」と「最も遠い」を 1 つずつ選ぶ）</b>で 4 軸の傾向を測り、16 タイプに分類します。
           Part 2 は記述で INSTYLE の思想との接続度を見ます。
         </p>
 

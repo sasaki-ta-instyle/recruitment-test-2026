@@ -50,15 +50,15 @@ export default function AdminReferencePage() {
           INSTYLE GROUP カルチャーテスト 2026 — 採点リファレンス
         </h1>
         <p className="ref-lead">
-          Part 1（ipsative）の設問と極、4 軸ネット→16 タイプ判定、マッチ強度、Part 2（記述）の採点ルーブリックをまとめたリファレンスです。
+          Part 1（イプサティブ評価）の設問と極、4 軸ネット→16 タイプ判定、マッチ強度、Part 2（記述）の採点ルーブリックをまとめたリファレンスです。
           面接前に印刷して持ち込むことを想定しています。
         </p>
       </header>
 
       <section className="admin-card">
-        <h2 className="ref-h2">Part 1 設問と極（v6 ipsative）</h2>
+        <h2 className="ref-h2">Part 1 設問と極（v6 イプサティブ評価）</h2>
         <p className="ref-desc">
-          各設問は 4 つの選択肢（A〜D）から「最も近い」を +1、「最も遠い」を −1 とする ipsative 形式。
+          各設問は 4 つの選択肢（A〜D）から「最も近い」を +1、「最も遠い」を −1 とするイプサティブ評価形式。
           各選択肢は 8 つの極のいずれかに割り当てられている。
         </p>
         <table className="admin-table ref-table">

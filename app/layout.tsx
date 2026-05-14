@@ -5,7 +5,7 @@ const SITE_URL = "https://app.instyle.group/recruitment-test-2026";
 const ASSETS = "https://app.instyle.group/_shared/static";
 const TITLE = "INSTYLE GROUP 採用カルチャーテスト 2026";
 const DESCRIPTION =
-  "INSTYLE GROUP の働き方・価値観への適合度を測る、ipsative 形式の採用カルチャーテスト。";
+  "INSTYLE GROUP の働き方・価値観への適合度を測る、イプサティブ評価形式の採用カルチャーテスト。";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),

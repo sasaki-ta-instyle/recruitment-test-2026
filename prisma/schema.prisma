@@ -22,6 +22,7 @@ model Candidate {
   part1Answers  Part1Answer[]
   part2Answers  Part2Answer[]
   score         Score?
+  questionNotes QuestionNote[]
 
   @@index([submittedAt])
   @@index([archivedAt])
@@ -56,6 +57,20 @@ model Part2Answer {
   score         Int?
 
   @@unique([candidateId, questionId])
+}
+
+model QuestionNote {
+  id          String    @id @default(cuid())
+  candidate   Candidate @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+  candidateId String
+  // 設問スコープ: "part1:0"〜"part1:19" / "part2:c1"〜"part2:c10"
+  scope       String
+  body        String
+  updatedAt   DateTime  @updatedAt
+  createdAt   DateTime  @default(now())
+
+  @@unique([candidateId, scope])
+  @@index([candidateId])
 }
 
 model Score {

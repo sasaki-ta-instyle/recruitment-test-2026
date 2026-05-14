@@ -877,6 +877,20 @@ button:focus-visible { outline: 2px solid var(--color-info); outline-offset: 2px
     font-style: italic;
   }
   .notes-status { display: none; }
+
+  /* 設問ごとコメント：印刷時は textarea を隠して入力済みテキストを表示 */
+  .qn-textarea { display: none; }
+  .qn-print-body {
+    display: block;
+    font-size: 9px;
+    line-height: 1.55;
+    color: var(--color-text);
+    white-space: pre-wrap;
+    background: rgba(0,0,0,0.04);
+    padding: 4px 6px;
+    border-radius: 3px;
+  }
+  .qn-cell { min-width: 0; max-width: none; }
 }
 
 /* ── Admin: 詳細ヘッダー / サマリ ────────────────────── */
@@ -1279,6 +1293,34 @@ button:focus-visible { outline: 2px solid var(--color-info); outline-offset: 2px
 }
 .notes-textarea:focus { box-shadow: 0 0 0 3px rgba(53,54,45,0.18); }
 .notes-print { display: none; }   /* スクリーンでは非表示 */
+
+/* ── 設問ごとのコメント（Part 1 表内 + Part 2 セクション内） ── */
+.qn-cell { min-width: 200px; max-width: 280px; vertical-align: top; }
+.qn-editor { display: flex; flex-direction: column; gap: 4px; }
+.qn-textarea {
+  width: 100%;
+  min-height: 40px;
+  padding: 6px 10px;
+  background: var(--color-bg);
+  border: none;
+  border-radius: var(--r-btn);
+  font-family: var(--font-sans);
+  font-size: 0.8125rem;
+  line-height: 1.55;
+  color: var(--color-text);
+  resize: vertical;
+  outline: none;
+  box-shadow: 0 0 0 1px var(--color-surface-2);
+  transition: box-shadow var(--t-fast);
+}
+.qn-textarea:focus { box-shadow: 0 0 0 2px rgba(53,54,45,0.18); }
+.qn-textarea::placeholder { color: var(--color-text-light); font-size: 0.75rem; }
+.qn-editor-saving .qn-textarea { box-shadow: 0 0 0 2px var(--color-info); }
+.qn-editor-saved .qn-textarea  { box-shadow: 0 0 0 2px var(--color-success); }
+.qn-editor-error .qn-textarea  { box-shadow: 0 0 0 2px var(--color-error); }
+.qn-print-body { display: none; }   /* スクリーンでは非表示 */
+
+.part2-note { margin-top: 12px; }
 
 .admin-checkbox-cell { width: 36px; padding-right: 0 !important; }
 .admin-checkbox-cell input[type="checkbox"] {

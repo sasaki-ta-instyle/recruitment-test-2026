@@ -14,6 +14,7 @@ import {
 import { Part2Section } from "./Part2Section";
 import { PrintButton } from "./PrintButton";
 import { NotesEditor } from "./NotesEditor";
+import { QuestionNoteEditor } from "./QuestionNoteEditor";
 
 export const dynamic = "force-dynamic";
 
@@ -63,9 +64,15 @@ export default async function CandidateDetailPage({
       score: true,
       part1Answers: { orderBy: { questionIndex: "asc" } },
       part2Answers: true,
+      questionNotes: true,
     },
   });
   if (!c) notFound();
+
+  const noteByScope = new Map<string, string>();
+  for (const n of c.questionNotes) {
+    noteByScope.set(n.scope, n.body);
+  }
 
   const axisNet: [number, number, number, number] = c.score
     ? [c.score.axisSelf, c.score.axisSunao, c.score.axisContrib, c.score.axisPositive]
@@ -129,7 +136,7 @@ export default async function CandidateDetailPage({
       )}
 
       <section className="admin-card">
-        <h2 className="admin-section-title">Part 1 回答（ipsative）</h2>
+        <h2 className="admin-section-title">Part 1 回答（イプサティブ評価）</h2>
         <table className="admin-table">
           <thead>
             <tr>
@@ -138,6 +145,7 @@ export default async function CandidateDetailPage({
               <th>設問</th>
               <th>最も近い</th>
               <th>最も遠い</th>
+              <th>コメント</th>
             </tr>
           </thead>
           <tbody>
@@ -164,31 +172,43 @@ export default async function CandidateDetailPage({
                   <td style={{ fontFamily: "var(--font-display)" }}>Q{String(i + 1).padStart(2, "0")}</td>
                   <td style={{ fontSize: "0.75rem", color: "var(--color-text-muted)" }}>{q.axes}</td>
                   <td style={{ fontSize: "0.8125rem", lineHeight: 1.6 }}>{q.text}</td>
-                  <td className={`answer-cell ${a?.closestPole ? "is-close" : ""}`}>
-                    {closeFixedLetter ? (
-                      <span className="opt-letter opt-letter-close">{closeFixedLetter}</span>
-                    ) : (
-                      <span className="opt-letter opt-letter-empty">—</span>
-                    )}
-                    <div className="opt-body">
-                      <div className="opt-pole">
-                        {a?.closestPole ?? (a?.closestLetter ? "（未確定）" : "—")}
+                  <td>
+                    <div className={`answer-cell ${a?.closestPole ? "is-close" : ""}`}>
+                      {closeFixedLetter ? (
+                        <span className="opt-letter opt-letter-close">{closeFixedLetter}</span>
+                      ) : (
+                        <span className="opt-letter opt-letter-empty">—</span>
+                      )}
+                      <div className="opt-body">
+                        <div className="opt-pole">
+                          {a?.closestPole ?? (a?.closestLetter ? "（未確定）" : "—")}
+                        </div>
+                        {closeText && <div className="opt-text">{closeText}</div>}
                       </div>
-                      {closeText && <div className="opt-text">{closeText}</div>}
                     </div>
                   </td>
-                  <td className={`answer-cell ${a?.farthestPole ? "is-far" : ""}`}>
-                    {farFixedLetter ? (
-                      <span className="opt-letter opt-letter-far">{farFixedLetter}</span>
-                    ) : (
-                      <span className="opt-letter opt-letter-empty">—</span>
-                    )}
-                    <div className="opt-body">
-                      <div className="opt-pole">
-                        {a?.farthestPole ?? (a?.farthestLetter ? "（未確定）" : "—")}
+                  <td>
+                    <div className={`answer-cell ${a?.farthestPole ? "is-far" : ""}`}>
+                      {farFixedLetter ? (
+                        <span className="opt-letter opt-letter-far">{farFixedLetter}</span>
+                      ) : (
+                        <span className="opt-letter opt-letter-empty">—</span>
+                      )}
+                      <div className="opt-body">
+                        <div className="opt-pole">
+                          {a?.farthestPole ?? (a?.farthestLetter ? "（未確定）" : "—")}
+                        </div>
+                        {farText && <div className="opt-text">{farText}</div>}
                       </div>
-                      {farText && <div className="opt-text">{farText}</div>}
                     </div>
+                  </td>
+                  <td className="qn-cell">
+                    <QuestionNoteEditor
+                      candidateId={c.id}
+                      scope={`part1:${i}`}
+                      initial={noteByScope.get(`part1:${i}`) ?? ""}
+                      rows={2}
+                    />
                   </td>
                 </tr>
               );
@@ -207,6 +227,9 @@ export default async function CandidateDetailPage({
           elapsedSec: a.elapsedSec,
           score: a.score,
         }))}
+        notesByScope={Object.fromEntries(
+          PART2.map((q) => [q.id, noteByScope.get(`part2:${q.id}`) ?? ""]),
+        )}
       />
 
       <NotesEditor candidateId={c.id} initial={c.interviewerNotes ?? ""} />

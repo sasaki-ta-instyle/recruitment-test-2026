@@ -36,6 +36,44 @@ export async function saveScore(input: {
   return { ok: true };
 }
 
+const SCOPE_REGEX = /^(part1:(?:[0-9]|1[0-9])|part2:c(?:10|[1-9]))$/;
+
+export async function saveQuestionNote(input: {
+  candidateId: string;
+  scope: string;
+  body: string;
+}): Promise<{ ok: true } | { ok: false; error: string }> {
+  if (!input.candidateId || typeof input.candidateId !== "string") {
+    return { ok: false, error: "invalid candidateId" };
+  }
+  if (!SCOPE_REGEX.test(input.scope)) {
+    return { ok: false, error: "invalid scope" };
+  }
+  const body = (input.body ?? "").slice(0, 4000);
+  if (body.length === 0) {
+    // 空文字なら削除（既存があれば）
+    await prisma.questionNote.deleteMany({
+      where: { candidateId: input.candidateId, scope: input.scope },
+    });
+  } else {
+    await prisma.questionNote.upsert({
+      where: {
+        candidateId_scope: {
+          candidateId: input.candidateId,
+          scope: input.scope,
+        },
+      },
+      update: { body },
+      create: {
+        candidateId: input.candidateId,
+        scope: input.scope,
+        body,
+      },
+    });
+  }
+  return { ok: true };
+}
+
 export async function saveNotes(input: {
   candidateId: string;
   notes: string;

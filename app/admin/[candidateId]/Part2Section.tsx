@@ -2,6 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { saveScore } from "./actions";
+import { QuestionNoteEditor } from "./QuestionNoteEditor";
 
 type Part2Question = { id: string; theme: string; text: string };
 type Part2AnswerLite = {
@@ -25,10 +26,12 @@ export function Part2Section({
   candidateId,
   questions,
   answers,
+  notesByScope,
 }: {
   candidateId: string;
   questions: Part2Question[];
   answers: Part2AnswerLite[];
+  notesByScope: Record<string, string>;
 }) {
   const initial: Record<string, number | null> = {};
   for (const q of questions) {
@@ -118,6 +121,16 @@ export function Part2Section({
               <span className="score-picker-state">
                 {isPending ? "保存中…" : current === null ? "未採点" : `${current} 点`}
               </span>
+            </div>
+
+            <div className="part2-note">
+              <QuestionNoteEditor
+                candidateId={candidateId}
+                scope={`part2:${q.id}`}
+                initial={notesByScope[q.id] ?? ""}
+                placeholder="この設問への所感・追加で確認したい点（自動保存）"
+                rows={2}
+              />
             </div>
           </div>
         );
