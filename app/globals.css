@@ -443,6 +443,8 @@ button:focus-visible { outline: 2px solid var(--color-info); outline-offset: 2px
   font-weight: 500;
   line-height: 1.8;
   color: var(--color-text);
+  /* 設問文の長さで「前へ／次へ」が動かないよう、最低 3 行分の高さを確保 */
+  min-height: calc(1.8em * 3);
 }
 .essay-progress {
   display: flex;
@@ -482,7 +484,9 @@ button:focus-visible { outline: 2px solid var(--color-info); outline-offset: 2px
 
 .essay-textarea {
   width: 100%;
-  min-height: 220px;
+  /* 全設問で「前へ／次へ」が同じ Y 位置に来るよう height を固定。
+     入りきらない場合は textarea 内で縦スクロール。 */
+  height: 280px;
   padding: 12px 14px;
   background: var(--color-bg);
   border: none;
@@ -492,7 +496,7 @@ button:focus-visible { outline: 2px solid var(--color-info); outline-offset: 2px
   line-height: 1.85;
   letter-spacing: 0.01em;
   color: var(--color-text);
-  resize: vertical;
+  resize: none;
   outline: none;
   transition: background var(--t-fast), box-shadow var(--t-fast);
 }
@@ -1767,7 +1771,7 @@ button:focus-visible { outline: 2px solid var(--color-info); outline-offset: 2px
     font-size: 0.75rem;
   }
   .essay-q { font-size: 0.9375rem; }
-  .essay-textarea { min-height: 180px; font-size: 1rem; }   /* iOS が 16px 未満でズームを発火するため 1rem(=16px on iOS default) に */
+  .essay-textarea { height: 240px; font-size: 1rem; }       /* iOS が 16px 未満でズームを発火するため 1rem(=16px on iOS default) に。height は固定で前へ／次への Y を揃える */
 
   .quiz-nav { gap: 8px; }
   .quiz-nav .btn-primary, .quiz-nav .btn-secondary { flex: 1; }
