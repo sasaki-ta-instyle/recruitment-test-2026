@@ -40,6 +40,9 @@ export function middleware(req: NextRequest) {
     status: 401,
     headers: {
       "WWW-Authenticate": `Basic realm="${REALM}", charset="UTF-8"`,
+      // 401 のボディが HTML 扱いされて、CSV 等の download リクエストが
+      // "export.html" として保存されるのを防ぐ。
+      "Content-Type": "text/plain; charset=utf-8",
     },
   });
 }

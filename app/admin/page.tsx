@@ -2,6 +2,7 @@ import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { VERDICT_LABEL, MATCH_LABEL, type Verdict, type MatchStrength } from "@/lib/scoring";
 import { CandidateTable, type CandidateRow } from "./CandidateTable";
+import { CsvDownloadButton } from "./CsvDownloadButton";
 import { Logo } from "@/app/_components/Logo";
 
 export const dynamic = "force-dynamic";
@@ -64,9 +65,7 @@ export default async function AdminPage({
           <Link className="admin-link" href="/admin/settings">受験設定（全体）</Link>
           <Link className="admin-link" href="/admin/reference">採点リファレンス</Link>
           <Link className="admin-link" href="/interviewer-guide">面接官ガイド</Link>
-          <a className="admin-link" href="/api/admin/export.csv" download>
-            CSV ダウンロード（{candidates.length} 件）
-          </a>
+          <CsvDownloadButton count={candidates.length} />
         </div>
       </header>
 
