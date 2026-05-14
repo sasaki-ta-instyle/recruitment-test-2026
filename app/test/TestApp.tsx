@@ -113,6 +113,29 @@ export default function TestApp({
     };
   }, []);
 
+  // ── タブ可視状態が変わったとき、壁時計から elapsed を再計算 ───
+  // モバイル等で背景化中は setInterval が止まる/間引かれるため、
+  // visibilitychange / pageshow / focus で復帰時に即時補正する。
+  useEffect(() => {
+    if (typeof document === "undefined") return;
+    const recompute = () => {
+      if (!startTimeRef.current) return;
+      const e = Math.floor((Date.now() - startTimeRef.current) / 1000);
+      setElapsed(Math.min(e, TOTAL_SEC));
+    };
+    const onVis = () => {
+      if (document.visibilityState === "visible") recompute();
+    };
+    document.addEventListener("visibilitychange", onVis);
+    window.addEventListener("pageshow", recompute);
+    window.addEventListener("focus", recompute);
+    return () => {
+      document.removeEventListener("visibilitychange", onVis);
+      window.removeEventListener("pageshow", recompute);
+      window.removeEventListener("focus", recompute);
+    };
+  }, []);
+
   // ── localStorage 永続化：マウント時に復元 ─────────────
   const [hydrated, setHydrated] = useState(false);
   useEffect(() => {
@@ -295,7 +318,19 @@ export default function TestApp({
     };
     tick();
     const i = setInterval(tick, 1000);
-    return () => clearInterval(i);
+    // 背景化から復帰したときに即座に closeAt を再評価
+    const onVis = () => {
+      if (document.visibilityState === "visible") tick();
+    };
+    document.addEventListener("visibilitychange", onVis);
+    window.addEventListener("pageshow", tick);
+    window.addEventListener("focus", tick);
+    return () => {
+      clearInterval(i);
+      document.removeEventListener("visibilitychange", onVis);
+      window.removeEventListener("pageshow", tick);
+      window.removeEventListener("focus", tick);
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [screen, windowCloseMs, serverClientOffset]);
 

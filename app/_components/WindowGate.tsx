@@ -51,7 +51,19 @@ export function WindowGate({
 
   useEffect(() => {
     const i = setInterval(() => setTick((t) => t + 1), 1000);
-    return () => clearInterval(i);
+    const recompute = () => setTick((t) => t + 1);
+    const onVis = () => {
+      if (document.visibilityState === "visible") recompute();
+    };
+    document.addEventListener("visibilitychange", onVis);
+    window.addEventListener("pageshow", recompute);
+    window.addEventListener("focus", recompute);
+    return () => {
+      clearInterval(i);
+      document.removeEventListener("visibilitychange", onVis);
+      window.removeEventListener("pageshow", recompute);
+      window.removeEventListener("focus", recompute);
+    };
   }, []);
 
   const nowMs = Date.now() - offset;
