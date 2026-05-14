@@ -1118,6 +1118,70 @@ button:focus-visible { outline: 2px solid var(--color-info); outline-offset: 2px
   color: var(--color-text-muted);
   letter-spacing: 0.04em;
 }
+/* ── Part 2 AI 採点 UI ───────────────────────────────── */
+.part2-ai-summary {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  background: rgba(56, 83, 123, 0.08);
+  padding: 10px 16px;
+  border-radius: var(--r-sm);
+  font-family: var(--font-display);
+}
+.part2-ai-summary .score-total-label { color: var(--color-info); }
+.part2-ai-button {
+  align-self: center;
+  min-height: 36px !important;
+  padding: 8px 16px !important;
+  font-size: 0.8125rem !important;
+}
+.part2-ai-status {
+  background: var(--color-surface-2);
+  padding: 8px 14px;
+  border-radius: var(--r-sm);
+  font-size: 0.8125rem;
+  color: var(--color-text);
+  margin-bottom: 12px;
+}
+.part2-ai-result {
+  margin-top: 10px;
+  padding: 10px 14px;
+  background: rgba(56, 83, 123, 0.06);
+  border-left: 3px solid var(--color-info);
+  border-radius: var(--r-sm);
+}
+.part2-ai-head {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  font-family: var(--font-display);
+  margin-bottom: 6px;
+}
+.part2-ai-label {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-info);
+}
+.part2-ai-score {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-text);
+  font-variant-numeric: tabular-nums;
+}
+.part2-ai-time {
+  font-size: 0.6875rem;
+  color: var(--color-text-muted);
+  font-variant-numeric: tabular-nums;
+}
+.part2-ai-reason {
+  font-size: 0.8125rem;
+  line-height: 1.75;
+  color: var(--color-text);
+  white-space: pre-wrap;
+}
+
 .part2-error {
   background: var(--color-error);
   color: var(--color-text-inverse);

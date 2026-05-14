@@ -61,6 +61,10 @@ model Part2Answer {
   elapsedSec    Int       @default(0)
   // 面接官が後から付ける Part2 採点（10/7/4/0 のいずれか）。未採点は null。
   score         Int?
+  // Claude による自動採点（0/4/7/10）と理由文・採点時刻。
+  aiScore       Int?
+  aiReason      String?
+  aiScoredAt    DateTime?
 
   @@unique([candidateId, questionId])
 }

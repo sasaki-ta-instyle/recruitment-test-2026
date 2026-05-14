@@ -1,7 +1,9 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import { useRouter } from "next/navigation";
 import { saveScore } from "./actions";
+import { aiScorePart2 } from "./aiScore";
 import { QuestionNoteEditor } from "./QuestionNoteEditor";
 
 type Part2Question = { id: string; theme: string; text: string };
@@ -11,6 +13,9 @@ type Part2AnswerLite = {
   charCount: number;
   elapsedSec: number;
   score: number | null;
+  aiScore: number | null;
+  aiReason: string | null;
+  aiScoredAt: string | null;
 };
 
 const SCORE_OPTIONS = [10, 7, 4, 0] as const;
@@ -42,6 +47,34 @@ export function Part2Section({
   const [pending, setPending] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [, startTransition] = useTransition();
+
+  const router = useRouter();
+  const [aiBusy, setAiBusy] = useState(false);
+  const [aiMsg, setAiMsg] = useState<string | null>(null);
+
+  const aiScoredCount = answers.filter((a) => a.aiScore !== null).length;
+  const aiTotal = answers.reduce<number>(
+    (sum, a) => sum + (typeof a.aiScore === "number" ? a.aiScore : 0),
+    0,
+  );
+
+  function runAiScoring() {
+    if (aiBusy) return;
+    if (!window.confirm("Claude による Part 2 の AI 採点を実行します。Anthropic API を消費しますがよろしいですか？")) return;
+    setAiBusy(true);
+    setAiMsg("採点中... 最大 1 分ほどかかります");
+    startTransition(async () => {
+      const res = await aiScorePart2({ candidateId });
+      if (res.ok) {
+        setAiMsg(`完了：${res.scored} / ${res.total} 問の AI 採点を更新しました`);
+        router.refresh();
+        setTimeout(() => setAiMsg(null), 5000);
+      } else {
+        setAiMsg(`エラー：${res.error}`);
+      }
+      setAiBusy(false);
+    });
+  }
 
   const total = Object.values(scores).reduce<number>(
     (sum, v) => sum + (typeof v === "number" ? v : 0),
@@ -80,8 +113,27 @@ export function Part2Section({
             採点済 {answeredCount} / {questions.length}
           </span>
         </div>
+        <div className="part2-ai-summary">
+          <span className="score-total-label">AI 合計</span>
+          <span className="score-total-value">
+            {aiTotal}
+            <span className="score-total-max"> / {MAX_TOTAL}</span>
+          </span>
+          <span className="score-total-meta">
+            AI 採点済 {aiScoredCount} / {questions.length}
+          </span>
+        </div>
+        <button
+          type="button"
+          className="btn-secondary part2-ai-button no-print"
+          onClick={runAiScoring}
+          disabled={aiBusy}
+        >
+          {aiBusy ? "AI 採点中…" : "Claude で AI 採点"}
+        </button>
       </div>
 
+      {aiMsg && <div className="part2-ai-status no-print">{aiMsg}</div>}
       {error && <div className="part2-error">{error}</div>}
 
       {questions.map((q) => {
@@ -122,6 +174,21 @@ export function Part2Section({
                 {isPending ? "保存中…" : current === null ? "未採点" : `${current} 点`}
               </span>
             </div>
+
+            {a?.aiScore != null && (
+              <div className="part2-ai-result">
+                <div className="part2-ai-head">
+                  <span className="part2-ai-label">AI 採点</span>
+                  <span className="part2-ai-score">{a.aiScore} 点</span>
+                  {a.aiScoredAt && (
+                    <span className="part2-ai-time">
+                      （{new Date(a.aiScoredAt).toLocaleString("ja-JP")}）
+                    </span>
+                  )}
+                </div>
+                {a.aiReason && <p className="part2-ai-reason">{a.aiReason}</p>}
+              </div>
+            )}
 
             <div className="part2-note">
               <QuestionNoteEditor

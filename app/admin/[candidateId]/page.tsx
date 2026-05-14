@@ -240,6 +240,9 @@ export default async function CandidateDetailPage({
           charCount: a.charCount,
           elapsedSec: a.elapsedSec,
           score: a.score,
+          aiScore: a.aiScore,
+          aiReason: a.aiReason,
+          aiScoredAt: a.aiScoredAt ? a.aiScoredAt.toISOString() : null,
         }))}
         notesByScope={Object.fromEntries(
           PART2.map((q) => [q.id, noteByScope.get(`part2:${q.id}`) ?? ""]),
