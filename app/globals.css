@@ -322,6 +322,42 @@ button:focus-visible { outline: 2px solid var(--color-info); outline-offset: 2px
   line-height: 1.75;
   color: var(--color-text);
 }
+.essay-progress {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+}
+.essay-progress-label {
+  font-family: var(--font-display);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  margin-right: 4px;
+}
+.essay-progress-current {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--color-text);
+}
+.essay-progress-of {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-text-muted);
+}
+.essay-progress-theme {
+  margin-left: auto;
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
+  text-align: right;
+}
+
 .essay-textarea {
   width: 100%;
   min-height: 200px;

@@ -73,6 +73,10 @@ export default function TestPage() {
   const [submitting, setSubmitting] = useState(false);
   const [submitErr, setSubmitErr] = useState<string | null>(null);
   const [candidateId, setCandidateId] = useState<string | null>(null);
+  // 重複送信防止（state は非同期反映なので確実にロックするためのフラグ）
+  const finishRequestedRef = useRef(false);
+  // 60 分タイムアップで自動送信されたかどうか
+  const [timeUp, setTimeUp] = useState(false);
 
   // Stop timers on unmount
   useEffect(() => {
@@ -137,17 +141,32 @@ export default function TestPage() {
     setP2Idx(0);
     setP2Answers(PART2.map(() => ""));
     setP2TimeSpent(PART2.map(() => 0));
+    finishRequestedRef.current = false;
+    setTimeUp(false);
 
     startTimeRef.current = Date.now();
     setElapsed(0);
     stopOverallTimer();
     overallTimerRef.current = setInterval(() => {
       if (!startTimeRef.current) return;
-      setElapsed(Math.floor((Date.now() - startTimeRef.current) / 1000));
+      const e = Math.floor((Date.now() - startTimeRef.current) / 1000);
+      // 上限 60 分でキャップ。実時刻は startTimeRef から再計算可能だが、
+      // 表示と「制限到達検知」を兼ねるためここで打ち切る。
+      setElapsed(Math.min(e, TOTAL_SEC));
     }, 1000);
 
     setScreen("p1");
   };
+
+  // ── 60 分タイムアップで自動提出 ──────────────────────
+  useEffect(() => {
+    if (elapsed < TOTAL_SEC) return;
+    if (finishRequestedRef.current) return;
+    if (screen !== "p1" && screen !== "p2" && screen !== "transition") return;
+    setTimeUp(true);
+    void finishTest();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [elapsed, screen]);
 
   // ── Per-question timer for Part 1 ───────────────────────
   useEffect(() => {
@@ -289,6 +308,10 @@ export default function TestPage() {
       enterP2(p2Idx + 1);
       window.scrollTo(0, 0);
     } else {
+      const ok = window.confirm(
+        "提出すると、この後は回答を編集できません。提出してよろしいですか？",
+      );
+      if (!ok) return;
       void finishTest();
     }
   };
@@ -302,6 +325,8 @@ export default function TestPage() {
 
   // ── Finish + submit ─────────────────────────────────────
   const finishTest = async () => {
+    if (finishRequestedRef.current) return;
+    finishRequestedRef.current = true;
     commitTime();
     p2PrevIdxRef.current = null;
     p2EnterAtRef.current = null;
@@ -432,7 +457,7 @@ export default function TestPage() {
         </div>
         <div className="overall-meta">
           <span>Total</span>
-          <span>経過 {fmtMS(elapsed)} / {fmtMS(TOTAL_SEC)}</span>
+          <span>経過 {fmtMS(Math.min(elapsed, TOTAL_SEC))} / {fmtMS(TOTAL_SEC)}</span>
         </div>
         <div className="progress-bar-wrap">
           <div className="progress-bar" style={{ width: `${pct}%` }} />
@@ -558,16 +583,17 @@ export default function TestPage() {
         </div>
         <div className="overall-meta">
           <span>Total</span>
-          <span>経過 {fmtMS(elapsed)} / {fmtMS(TOTAL_SEC)}</span>
+          <span>経過 {fmtMS(Math.min(elapsed, TOTAL_SEC))} / {fmtMS(TOTAL_SEC)}</span>
         </div>
         <div className="progress-bar-wrap">
           <div className="progress-bar" style={{ width: `${pct}%` }} />
         </div>
         <div className="quiz-body">
-          <div className="q-number">
-            <span className="eyebrow">
-              Part 2 — {String(p2Idx + 1).padStart(2, "0")} ／ {q.theme}
-            </span>
+          <div className="essay-progress" aria-label={`Part 2 進捗 ${p2Idx + 1} / ${PART2.length}`}>
+            <span className="essay-progress-label">記述</span>
+            <span className="essay-progress-current">{p2Idx + 1}</span>
+            <span className="essay-progress-of">／ {PART2.length}</span>
+            <span className="essay-progress-theme">{q.theme}</span>
           </div>
           <div className="essay-wrap">
             <div className="essay-q">{q.text}</div>
@@ -593,9 +619,12 @@ export default function TestPage() {
   }
 
   // ── Render: Result ──────────────────────────────────────
-  const totalElapsed = startTimeRef.current
-    ? Math.floor((Date.now() - startTimeRef.current) / 1000)
-    : elapsed;
+  const totalElapsed = Math.min(
+    TOTAL_SEC,
+    startTimeRef.current
+      ? Math.floor((Date.now() - startTimeRef.current) / 1000)
+      : elapsed,
+  );
 
   return (
     <main className="app-shell">
@@ -612,6 +641,12 @@ export default function TestPage() {
           {VERDICT_LABEL[verdict.type.verdict]}
         </span>
       </div>
+
+      {timeUp && (
+        <div className="flag-banner">
+          <strong>制限時間 60 分に到達：</strong>その時点までの回答内容で自動的に提出されました。
+        </div>
+      )}
 
       {verdict.absoluteNg && (
         <div className="flag-banner">

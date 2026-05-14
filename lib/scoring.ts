@@ -2,7 +2,9 @@
 
 import type { Pole } from "./questions";
 
-export const AXIS_NAMES = ["自責 / 他責", "素直さ", "貢献の視点", "ポジ / ネガ"] as const;
+// 軸名はバー表示の左右順（負極 / 正極）に合わせる：
+// AXIS_LABELS[i][0] が左（負側）、AXIS_LABELS[i][1] が右（正側）
+export const AXIS_NAMES = ["他責 / 自責", "素直さ", "貢献の視点", "ネガ / ポジ"] as const;
 
 export const AXIS_LABELS: ReadonlyArray<readonly [string, string]> = [
   ["他責傾向", "自責傾向"],
