@@ -1,4 +1,5 @@
 import { TYPE_MAP, VERDICT_LABEL } from "@/lib/scoring";
+import { Logo } from "@/app/_components/Logo";
 
 export const metadata = {
   title: "面接官ガイド | INSTYLE GROUP 採用カルチャーテスト 2026",
@@ -16,7 +17,7 @@ export default function InterviewerGuidePage() {
   return (
     <main className="wide-shell">
       <header style={{ marginBottom: 24 }}>
-        <span className="eyebrow">INSTYLE GROUP</span>
+        <Logo height={14} />
         <h1 style={{ fontSize: "1.625rem", marginTop: 8 }}>採用カルチャーテスト 2026 面接官ガイド</h1>
         <p style={{ fontSize: "0.9375rem", color: "var(--color-text-muted)", marginTop: 8, lineHeight: 1.8 }}>
           v6（ipsative 4 選択肢 × 4 軸 × 16 タイプ）。Part 1 は性格傾向の自動判定、Part 2 は INSTYLE 思想との接続度の人手採点。

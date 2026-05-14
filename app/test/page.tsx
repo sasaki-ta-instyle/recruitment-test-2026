@@ -13,6 +13,7 @@ import {
   scoreAxes,
   type PoleScores,
 } from "@/lib/scoring";
+import { Logo } from "@/app/_components/Logo";
 
 type Screen = "intro" | "p1" | "transition" | "p2" | "result";
 
@@ -397,7 +398,7 @@ export default function TestPage() {
     return (
       <main className="app-shell">
         <div className="landing">
-          <span className="eyebrow">INSTYLE GROUP</span>
+          <Logo className="landing-logo" height={16} />
           <h1 className="landing-title">採用カルチャーテスト 2026</h1>
           <p className="landing-sub">
             Part 1（選択 20 問）と Part 2（記述 10 問）の 2 部構成、合計 60 分です。
@@ -448,7 +449,7 @@ export default function TestPage() {
     return (
       <main className="app-shell">
         <div className="part-header">
-          <span className="part-logo">INSTYLE GROUP</span>
+          <Logo height={12} />
           <span className="part-info">
             Part 1 — {p1Idx + 1} / {PART1.length}
           </span>
@@ -466,10 +467,13 @@ export default function TestPage() {
         <div className="quiz-body">
           <div className="q-number">
             <span className="eyebrow">
-              Q{String(p1Idx + 1).padStart(2, "0")} ／ {q.axes}
+              Q{String(p1Idx + 1).padStart(2, "0")}
             </span>
           </div>
           <div className="q-text">{q.text}</div>
+          <div className="ips-help">
+            2つ選んでください：「最も近い」を1つ、「最も遠い」を1つ。同じ選択肢にはどちらも付けられません。
+          </div>
           <div className="timer-bar-wrap">
             <div
               className="timer-bar"
@@ -521,9 +525,6 @@ export default function TestPage() {
               );
             })}
           </div>
-          <div className="ips-help">
-            2つ選んでください：「最も近い」を1つ、「最も遠い」を1つ。同じ選択肢にはどちらも付けられません。
-          </div>
         </div>
         <div className="quiz-nav no-prev">
           <button
@@ -572,7 +573,7 @@ export default function TestPage() {
     return (
       <main className="app-shell">
         <div className="part-header">
-          <span className="part-logo">INSTYLE GROUP</span>
+          <Logo height={12} />
           <span className="part-info">
             Part 2 — {p2Idx + 1} / {PART2.length}
           </span>
@@ -592,7 +593,6 @@ export default function TestPage() {
             <span className="essay-progress-label">記述</span>
             <span className="essay-progress-current">{p2Idx + 1}</span>
             <span className="essay-progress-of">／ {PART2.length}</span>
-            <span className="essay-progress-theme">{q.theme}</span>
           </div>
           <div className="essay-wrap">
             <div className="essay-q">{q.text}</div>
@@ -628,7 +628,7 @@ export default function TestPage() {
   return (
     <main className="app-shell">
       <div className="result-header">
-        <span className="result-logo">INSTYLE GROUP</span>
+        <Logo height={14} />
         <span className="eyebrow">Culture Fit Assessment</span>
       </div>
 

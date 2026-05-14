@@ -1,10 +1,11 @@
 import Link from "next/link";
+import { Logo } from "@/app/_components/Logo";
 
 export default function HomePage() {
   return (
     <main className="app-shell">
       <div className="landing">
-        <span className="eyebrow">INSTYLE GROUP</span>
+        <Logo className="landing-logo" height={16} />
         <h1 className="landing-title">採用カルチャーテスト 2026</h1>
         <p className="landing-sub">
           INSTYLE GROUP の働き方・価値観への適合度を測定する 60 分のテストです。

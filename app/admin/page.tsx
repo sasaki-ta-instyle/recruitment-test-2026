@@ -2,6 +2,7 @@ import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { VERDICT_LABEL, MATCH_LABEL, type Verdict, type MatchStrength } from "@/lib/scoring";
 import { CandidateTable, type CandidateRow } from "./CandidateTable";
+import { Logo } from "@/app/_components/Logo";
 
 export const dynamic = "force-dynamic";
 export const metadata = {
@@ -50,7 +51,7 @@ export default async function AdminPage({
   return (
     <main className="wide-shell">
       <header className="admin-detail-header">
-        <span className="eyebrow">INSTYLE GROUP</span>
+        <Logo height={14} />
         <h1 className="admin-detail-name">受験者ダッシュボード</h1>
         <p className="admin-detail-meta">
           {view === "active"
