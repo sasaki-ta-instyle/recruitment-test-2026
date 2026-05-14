@@ -417,9 +417,8 @@ export default function TestPage() {
                 setName(e.target.value);
                 if (e.target.value.trim()) setNameErr(false);
               }}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" && name.trim()) startTest();
-              }}
+              /* Enter は IME 変換確定で誤って次ページに進まないよう無効化。
+                 開始は「テストを開始する」ボタンのみ。 */
             />
             <div className={`name-error ${nameErr ? "show" : ""}`}>
               お名前を入力してください。

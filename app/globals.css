@@ -783,6 +783,62 @@ button:focus-visible { outline: 2px solid var(--color-info); outline-offset: 2px
 .admin-table a { color: var(--color-text); text-decoration: none; font-weight: 600; }
 .admin-table a:hover { color: var(--color-info); }
 
+/* 受験者詳細 Part 1 表：選択肢 letter + 極 */
+.answer-cell {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  min-width: 180px;
+}
+.opt-letter {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 28px;
+  height: 28px;
+  padding: 0 8px;
+  border-radius: var(--r-btn);
+  background: var(--color-surface-3);
+  color: var(--color-text-muted);
+  font-family: var(--font-display);
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  flex-shrink: 0;
+}
+.answer-cell.is-close .opt-letter-close {
+  background: var(--color-info);
+  color: var(--color-text-inverse);
+}
+.answer-cell.is-far .opt-letter-far {
+  background: var(--color-error);
+  color: var(--color-text-inverse);
+}
+.opt-letter-empty {
+  background: transparent;
+  color: var(--color-text-light);
+}
+.opt-body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.opt-pole {
+  font-family: var(--font-display);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--color-text);
+  letter-spacing: 0.01em;
+}
+.answer-cell.is-close .opt-pole { color: var(--color-info); }
+.answer-cell.is-far   .opt-pole { color: var(--color-error); }
+.opt-text {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  line-height: 1.55;
+}
+
 /* ── Part 2 採点 UI ───────────────────────────────────── */
 .part2-header {
   display: flex;

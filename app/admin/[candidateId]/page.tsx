@@ -110,16 +110,42 @@ export default async function CandidateDetailPage({
           <tbody>
             {PART1.map((q, i) => {
               const a = c.part1Answers.find((p) => p.questionIndex === i);
+              const closeText = a?.closestPole
+                ? q.options.find((o) => o.pole === a.closestPole)?.text ?? null
+                : null;
+              const farText = a?.farthestPole
+                ? q.options.find((o) => o.pole === a.farthestPole)?.text ?? null
+                : null;
               return (
                 <tr key={q.id}>
                   <td style={{ fontFamily: "var(--font-display)" }}>Q{String(i + 1).padStart(2, "0")}</td>
                   <td style={{ fontSize: "0.75rem", color: "var(--color-text-muted)" }}>{q.axes}</td>
                   <td style={{ fontSize: "0.8125rem", lineHeight: 1.6 }}>{q.text}</td>
-                  <td style={{ fontSize: "0.8125rem", color: a?.closestPole ? "var(--color-info)" : "var(--color-text-muted)" }}>
-                    {a?.closestPole ?? (a?.closestLetter ? `${a.closestLetter}（未確定）` : "—")}
+                  <td className={`answer-cell ${a?.closestPole ? "is-close" : ""}`}>
+                    {a?.closestLetter ? (
+                      <span className="opt-letter opt-letter-close">{a.closestLetter}</span>
+                    ) : (
+                      <span className="opt-letter opt-letter-empty">—</span>
+                    )}
+                    <div className="opt-body">
+                      <div className="opt-pole">
+                        {a?.closestPole ?? (a?.closestLetter ? "（未確定）" : "—")}
+                      </div>
+                      {closeText && <div className="opt-text">{closeText}</div>}
+                    </div>
                   </td>
-                  <td style={{ fontSize: "0.8125rem", color: a?.farthestPole ? "var(--color-error)" : "var(--color-text-muted)" }}>
-                    {a?.farthestPole ?? (a?.farthestLetter ? `${a.farthestLetter}（未確定）` : "—")}
+                  <td className={`answer-cell ${a?.farthestPole ? "is-far" : ""}`}>
+                    {a?.farthestLetter ? (
+                      <span className="opt-letter opt-letter-far">{a.farthestLetter}</span>
+                    ) : (
+                      <span className="opt-letter opt-letter-empty">—</span>
+                    )}
+                    <div className="opt-body">
+                      <div className="opt-pole">
+                        {a?.farthestPole ?? (a?.farthestLetter ? "（未確定）" : "—")}
+                      </div>
+                      {farText && <div className="opt-text">{farText}</div>}
+                    </div>
                   </td>
                 </tr>
               );
