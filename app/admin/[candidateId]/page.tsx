@@ -11,6 +11,11 @@ import {
   type MatchStrength,
   type Verdict,
 } from "@/lib/scoring";
+import {
+  computeFinalVerdict,
+  FINAL_VERDICT_DESC,
+  FINAL_VERDICT_LABEL,
+} from "@/lib/finalVerdict";
 import { Part2Section } from "./Part2Section";
 import { PrintButton } from "./PrintButton";
 import { NotesEditor } from "./NotesEditor";
@@ -80,6 +85,28 @@ export default async function CandidateDetailPage({
     : [0, 0, 0, 0];
   const tiers = axisNet.map(getAxisTier);
 
+  // Part 2 人手採点合計（採点済の問のスコアを集計）
+  const part2HumanScore = c.part2Answers.reduce<number>(
+    (sum, a) => sum + (typeof a.score === "number" ? a.score : 0),
+    0,
+  );
+  const part2HumanAnswered = c.part2Answers.filter((a) => a.score !== null).length;
+  const finalResult = computeFinalVerdict({
+    part1Verdict: (c.score?.verdict as Verdict) ?? null,
+    absoluteNg: c.score?.absoluteNg ?? false,
+    part2Score: part2HumanScore,
+    part2Answered: part2HumanAnswered,
+  });
+  // 総合判定バッジに使う verdict 色マッピング
+  const FINAL_BADGE_VERDICT: Record<string, Verdict> = {
+    "accept-strong": "good-deep",
+    accept: "good",
+    "review-positive": "develop",
+    review: "review",
+    "review-negative": "warn",
+    reject: "ng",
+  };
+
   return (
     <main className="wide-shell">
       <div className="no-print admin-detail-nav" style={{ marginBottom: 12 }}>
@@ -148,6 +175,53 @@ export default async function CandidateDetailPage({
           </div>
         </div>
       )}
+
+      <section className="admin-card final-verdict-card">
+        <div className="final-verdict-header">
+          <h2 className="admin-section-title" style={{ marginBottom: 0 }}>総合判定</h2>
+          {finalResult.verdict ? (
+            <span
+              className={`verdict-badge verdict-${FINAL_BADGE_VERDICT[finalResult.verdict]}`}
+              style={{ marginTop: 0 }}
+            >
+              {FINAL_VERDICT_LABEL[finalResult.verdict]}
+            </span>
+          ) : (
+            <span className="match-pill">未確定</span>
+          )}
+        </div>
+        <div className="final-verdict-inputs">
+          <div className="final-verdict-cell">
+            <span className="final-verdict-label">Part 1 タイプ</span>
+            <span className="final-verdict-value">
+              {c.score?.typeName ?? "—"}
+              {c.score && (
+                <>
+                  <span className={`verdict-badge verdict-${c.score.verdict}`} style={{ marginTop: 0, marginLeft: 8 }}>
+                    {VERDICT_LABEL[c.score.verdict as Verdict]}
+                  </span>
+                </>
+              )}
+            </span>
+          </div>
+          <div className="final-verdict-cell">
+            <span className="final-verdict-label">Part 2 人手合計</span>
+            <span className="final-verdict-value">
+              <strong style={{ fontSize: "1.25rem", fontFamily: "var(--font-display)" }}>
+                {part2HumanScore}
+              </strong>{" "}
+              / 100
+              <span className="final-verdict-meta" style={{ marginLeft: 8 }}>
+                （採点済 {part2HumanAnswered} / 10）
+              </span>
+            </span>
+          </div>
+        </div>
+        <p className="final-verdict-reason">{finalResult.reason}</p>
+        {finalResult.verdict && (
+          <p className="final-verdict-desc">{FINAL_VERDICT_DESC[finalResult.verdict]}</p>
+        )}
+      </section>
 
       <section className="admin-card">
         <h2 className="admin-section-title">Part 1 回答（イプサティブ評価）</h2>
