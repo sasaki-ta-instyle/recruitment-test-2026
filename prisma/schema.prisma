@@ -19,6 +19,8 @@ model Candidate {
   archivedAt    DateTime?
   // 面接官メモ（自由記述）。autosave で /admin/[id] から更新される。
   interviewerNotes String?
+  // 面接担当者名（任意）。採点シート的な用途として記録する。
+  interviewerName  String?
   part1Answers  Part1Answer[]
   part2Answers  Part2Answer[]
   score         Score?

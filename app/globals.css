@@ -885,8 +885,8 @@ button:focus-visible { outline: 2px solid var(--color-info); outline-offset: 2px
   }
   .match-pill { font-size: 9px; padding: 2px 8px; }
 
-  /* notes：印刷時は textarea を隠してメモ本文を表示 */
-  .notes-textarea { display: none; }
+  /* notes：印刷時は textarea / input を隠して本文を表示 */
+  .notes-textarea, .notes-input { display: none; }
   .notes-print { display: block; }
   .notes-print-body {
     font-size: 11px;
@@ -901,6 +901,30 @@ button:focus-visible { outline: 2px solid var(--color-info); outline-offset: 2px
     color: #666;
     font-style: italic;
   }
+  .notes-print-row {
+    display: flex;
+    gap: 6px;
+    align-items: baseline;
+    font-size: 11px;
+    line-height: 1.7;
+  }
+  .notes-print-label {
+    font-family: var(--font-display);
+    font-weight: 700;
+    color: #000;
+  }
+  .notes-print-value {
+    color: #000;
+    border-bottom: 1px solid rgba(0,0,0,0.3);
+    min-width: 120px;
+    padding-bottom: 1px;
+  }
+  .notes-field-label {
+    font-size: 9px !important;
+    color: #555 !important;
+    margin-bottom: 2px !important;
+  }
+  .notes-field { margin-bottom: 8px !important; }
   .notes-status { display: none; }
 
   /* 設問ごとコメント：印刷時は textarea を隠して入力済みテキストを表示 */
@@ -1317,7 +1341,33 @@ button:focus-visible { outline: 2px solid var(--color-info); outline-offset: 2px
   transition: box-shadow var(--t-fast);
 }
 .notes-textarea:focus { box-shadow: 0 0 0 3px rgba(53,54,45,0.18); }
+.notes-field { margin-bottom: 14px; }
+.notes-field:last-child { margin-bottom: 0; }
+.notes-field-label {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  margin-bottom: 6px;
+}
+.notes-input {
+  width: 100%;
+  padding: 10px 14px;
+  background: var(--color-bg);
+  border: none;
+  border-radius: var(--r-btn);
+  font-family: var(--font-sans);
+  font-size: 0.9375rem;
+  color: var(--color-text);
+  outline: none;
+  box-shadow: 0 0 0 1px var(--color-surface-2);
+  transition: box-shadow var(--t-fast);
+}
+.notes-input:focus { box-shadow: 0 0 0 3px rgba(53,54,45,0.18); }
 .notes-print { display: none; }   /* スクリーンでは非表示 */
+.notes-print-row { display: none; }
 
 /* ── 設問ごとのコメント（Part 1 表内 + Part 2 セクション内） ── */
 .qn-cell { min-width: 200px; max-width: 280px; vertical-align: top; }

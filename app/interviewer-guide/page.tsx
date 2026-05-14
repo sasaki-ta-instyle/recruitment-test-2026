@@ -327,30 +327,12 @@ export default function InterviewerGuidePage() {
         </p>
       </section>
 
-      {/* Section 7: 採点シート（印刷可） */}
-      <section className="guide-section" id="section-sheet">
-        <span className="eyebrow">Section 7</span>
-        <h2>採点シート（印刷可）</h2>
-        <p className="section-desc">
-          紙面で採点する場合の記入フォーム。ブラウザの印刷機能（Cmd+P / Ctrl+P）で A4 1 枚に収まるよう調整済み。
-        </p>
-        <table className="guide-table">
-          <tbody>
-            <tr><td style={{ width: "30%" }}>候補者氏名</td><td style={{ height: 36 }}></td></tr>
-            <tr><td>受験日時</td><td style={{ height: 36 }}></td></tr>
-            <tr><td>16 タイプ判定</td><td style={{ height: 36 }}></td></tr>
-            <tr><td>4 軸スコア</td><td style={{ height: 36 }}>自他＿＿ / 素直＿＿ / 貢献＿＿ / ポジネガ＿＿</td></tr>
-            <tr><td>マッチ強度</td><td style={{ height: 36 }}>強い / 明確 / 中立軸あり / 弱い / 判定保留</td></tr>
-            <tr><td>絶対 NG 判定</td><td style={{ height: 36 }}>該当 / 非該当</td></tr>
-            <tr><td>Part 2 合計（100 点満点）</td><td style={{ height: 36 }}></td></tr>
-            <tr><td>所見・メモ</td><td style={{ height: 96 }}></td></tr>
-            <tr><td>面接担当</td><td style={{ height: 36 }}></td></tr>
-          </tbody>
-        </table>
-      </section>
-
       <footer style={{ marginTop: 32, padding: 16, fontSize: "0.8125rem", color: "var(--color-text-muted)", textAlign: "center" }} className="no-print">
-        <p>受験者の生データは <a href="/recruitment-test-2026/admin">受験者ダッシュボード</a> から確認できます。</p>
+        <p>
+          採点シートは <a href="/recruitment-test-2026/admin">受験者ダッシュボード</a>
+          → 各受験者の詳細ページに統合されています。「面接官メモ ／ 採点シート」セクションに
+          面接担当と所見を入力でき、「印刷 / PDF」ボタンから採点シート相当の A4 PDF を出力できます。
+        </p>
       </footer>
     </main>
   );

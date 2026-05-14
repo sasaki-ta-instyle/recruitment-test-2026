@@ -74,6 +74,21 @@ export async function saveQuestionNote(input: {
   return { ok: true };
 }
 
+export async function saveInterviewerName(input: {
+  candidateId: string;
+  name: string;
+}): Promise<{ ok: true } | { ok: false; error: string }> {
+  if (!input.candidateId || typeof input.candidateId !== "string") {
+    return { ok: false, error: "invalid candidateId" };
+  }
+  const trimmed = (input.name ?? "").trim().slice(0, 200);
+  await prisma.candidate.update({
+    where: { id: input.candidateId },
+    data: { interviewerName: trimmed.length === 0 ? null : trimmed },
+  });
+  return { ok: true };
+}
+
 export async function saveNotes(input: {
   candidateId: string;
   notes: string;

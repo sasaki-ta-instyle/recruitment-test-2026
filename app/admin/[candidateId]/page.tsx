@@ -232,7 +232,11 @@ export default async function CandidateDetailPage({
         )}
       />
 
-      <NotesEditor candidateId={c.id} initial={c.interviewerNotes ?? ""} />
+      <NotesEditor
+        candidateId={c.id}
+        initialNotes={c.interviewerNotes ?? ""}
+        initialInterviewer={c.interviewerName ?? ""}
+      />
     </main>
   );
 }
