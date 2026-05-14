@@ -62,7 +62,7 @@ pnpm install
 
 ```bash
 cp .env.example .env.local
-# DATABASE_URL="file:./prisma/dev.db"
+# DATABASE_URL="file:./dev.db"   # schema.prisma 起点で解決される → 実体は prisma/dev.db
 # BASIC_AUTH_PASS は 1Password から取得（共有メモ：「採用テスト面接官ログイン」）。ユーザー名は使わない単一パスワード運用。
 ```
 
