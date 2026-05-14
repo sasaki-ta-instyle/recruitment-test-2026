@@ -230,7 +230,7 @@ export default function AdminReferencePage() {
           INSTYLE GROUP カルチャーテスト 2026 — 採点リファレンス
         </h1>
         <p className="ref-lead">
-          Part 1（イプサティブ評価）の設問と極、4 軸ネット→16 タイプ判定、マッチ強度、Part 2（記述）の採点ルーブリックをまとめたリファレンスです。
+          Part 1（イプサティブ評価）の設問と各選択肢の傾向、4 軸ネット→16 タイプ判定、マッチ強度、Part 2（記述）の採点ルーブリックをまとめたリファレンスです。
           面接前に印刷して持ち込むことを想定しています。
         </p>
       </header>
@@ -239,7 +239,7 @@ export default function AdminReferencePage() {
         <h2 className="ref-h2">Part 1 設問</h2>
         <p className="ref-desc">
           各設問は 4 つの選択肢（A〜D）から「最も近い」を +1、「最も遠い」を −1 とするイプサティブ評価形式。
-          各選択肢は 8 つの極のいずれかに割り当てられている。
+          各選択肢は 8 種類の傾向のいずれかに割り当てられている。
         </p>
         <table className="admin-table ref-table">
           <thead>
@@ -282,10 +282,10 @@ export default function AdminReferencePage() {
         <h2 className="ref-h2">採点ロジック</h2>
         <ol className="ref-steps">
           <li>
-            <strong>STEP 1：極カウント</strong> — 各設問で「最も近い」を選んだ極に +1、「最も遠い」を選んだ極に −1。20 問通して 8 極のカウントを集計する。
+            <strong>STEP 1：傾向カウント</strong> — 各設問で「最も近い」を選んだ傾向に +1、「最も遠い」を選んだ傾向に −1。20 問通して 8 傾向のカウントを集計する。
           </li>
           <li>
-            <strong>STEP 2：4 軸ネット</strong> — 対極ペアの差分。
+            <strong>STEP 2：4 軸ネット</strong> — 対になる傾向ペアの差分。
             <ul className="ref-ul">
               {AXIS_NAMES.map((name, i) => (
                 <li key={i}>
@@ -298,11 +298,11 @@ export default function AdminReferencePage() {
           <li>
             <strong>STEP 3：軸ティア判定</strong>
             <ul className="ref-ul">
-              <li>+10 以上：強い正極</li>
-              <li>+5〜+9：正極寄り</li>
+              <li>+10 以上：強い正の傾向</li>
+              <li>+5〜+9：正の傾向あり</li>
               <li>−4〜+4：中立</li>
-              <li>−5〜−9：負極寄り</li>
-              <li>−10 以下：強い負極</li>
+              <li>−5〜−9：負の傾向あり</li>
+              <li>−10 以下：強い負の傾向</li>
             </ul>
           </li>
           <li>
@@ -320,7 +320,7 @@ export default function AdminReferencePage() {
       <section className="admin-card">
         <h2 className="ref-h2">16 タイプ判定表</h2>
         <p className="ref-desc">
-          ビット列の順序は <strong>自他 / 素直 / 貢献 / ポジネガ</strong>（1＝正極、0＝負極）。
+          ビット列の順序は <strong>自他 / 素直 / 貢献 / ポジネガ</strong>（1＝正の傾向、0＝負の傾向）。
         </p>
         <table className="admin-table ref-table">
           <thead>

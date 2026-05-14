@@ -53,8 +53,8 @@ export default function InterviewerGuidePage() {
 
         <h3>採点ロジック（4 ステップ）</h3>
         <ol>
-          <li><b>STEP 1 — 極スコア集計：</b>「最も近い」で選ばれた選択肢の極に <b>+1</b>、「最も遠い」で選ばれた選択肢の極に <b>−1</b>。残り 2 つは 0。各極は 20 問のうち 10 回登場、−10 〜 +10 点。</li>
-          <li><b>STEP 2 — 軸ネット計算：</b>軸ごとに「正極スコア − 負極スコア」。範囲 −20 〜 +20 点。</li>
+          <li><b>STEP 1 — 傾向スコア集計：</b>「最も近い」で選ばれた選択肢の傾向に <b>+1</b>、「最も遠い」で選ばれた選択肢の傾向に <b>−1</b>。残り 2 つは 0。各傾向は 20 問のうち 10 回登場、−10 〜 +10 点。</li>
+          <li><b>STEP 2 — 軸ネット計算：</b>軸ごとに「正の傾向スコア − 負の傾向スコア」。範囲 −20 〜 +20 点。</li>
           <li><b>STEP 3 — 判定区分：</b>軸ネットを 5 区分にマッピング（下表）。</li>
           <li><b>STEP 4 — 16 タイプ特定：</b>各軸の符号で 4 ビット化、16 タイプに分類。中立軸（−4〜+4）は Part 2 で確認。</li>
         </ol>
@@ -65,11 +65,11 @@ export default function InterviewerGuidePage() {
             <tr><th>区分</th><th>軸ネット</th><th>意味</th></tr>
           </thead>
           <tbody>
-            <tr><td>強い正極</td><td>+10 〜 +20</td><td>正極の傾向が強い</td></tr>
-            <tr><td>正極寄り</td><td>+5 〜 +9</td><td>正極寄りの傾向あり</td></tr>
+            <tr><td>強い正の傾向</td><td>+10 〜 +20</td><td>正側の傾向が強い</td></tr>
+            <tr><td>正の傾向あり</td><td>+5 〜 +9</td><td>正側に少し寄っている</td></tr>
             <tr><td>中立</td><td>−4 〜 +4</td><td>判定保留。Part 2 で重点確認</td></tr>
-            <tr><td>負極寄り</td><td>−5 〜 −9</td><td>負極寄りの傾向あり</td></tr>
-            <tr><td>強い負極</td><td>−10 〜 −20</td><td>負極の傾向が強い</td></tr>
+            <tr><td>負の傾向あり</td><td>−5 〜 −9</td><td>負側に少し寄っている</td></tr>
+            <tr><td>強い負の傾向</td><td>−10 〜 −20</td><td>負側の傾向が強い</td></tr>
           </tbody>
         </table>
 
@@ -108,7 +108,7 @@ export default function InterviewerGuidePage() {
         <span className="eyebrow">Section 2</span>
         <h2>判定マトリクス（16 タイプ俯瞰）</h2>
         <p className="section-desc">
-          タイプコードは <b>[自他][素直][貢献][ポジネガ]</b> の 4 ビット。1 = 正極（自責 / 素直 / 貢献あり / ポジ）、0 = 負極。
+          タイプコードは <b>[自他][素直][貢献][ポジネガ]</b> の 4 ビット。1 = 正の傾向（自責 / 素直 / 貢献あり / ポジ）、0 = 負の傾向。
         </p>
         <table className="guide-table">
           <thead>
@@ -207,7 +207,7 @@ export default function InterviewerGuidePage() {
         <ol>
           <li>
             <b>Step 1 — Part 1 集計：</b>
-            8 極スコアから 4 軸ネット（−20〜+20）を算出。タイプコード [自他][素直][貢献][ポジネガ] を作る。
+            8 つの傾向スコアから 4 軸ネット（−20〜+20）を算出。タイプコード [自他][素直][貢献][ポジネガ] を作る。
           </li>
           <li>
             <b>Step 2 — NG ゾーン判定：</b>

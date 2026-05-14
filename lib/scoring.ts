@@ -2,7 +2,7 @@
 
 import type { Pole } from "./questions";
 
-// 軸名はバー表示の左右順（負極 / 正極）に合わせる：
+// 軸名はバー表示の左右順（負側の傾向 / 正側の傾向）に合わせる：
 // AXIS_LABELS[i][0] が左（負側）、AXIS_LABELS[i][1] が右（正側）
 export const AXIS_NAMES = ["他責 / 自責", "素直さ", "貢献の視点", "ネガ / ポジ"] as const;
 
@@ -27,7 +27,7 @@ export const VERDICT_LABEL: Record<Verdict, string> = {
 export type TypeInfo = { name: string; verdict: Verdict; desc: string };
 
 export const TYPE_MAP: Record<string, TypeInfo> = {
-  "1111": { name: "王道フィット型", verdict: "good-deep", desc: "4軸すべて正極。INSTYLEど真ん中。リーダー候補。" },
+  "1111": { name: "王道フィット型", verdict: "good-deep", desc: "4軸すべて正の傾向。INSTYLEど真ん中。リーダー候補。" },
   "1110": { name: "堅実リスク管理型", verdict: "good-deep", desc: "自走 × チーム × リスク直視。地に足の着いた貢献者。" },
   "1101": { name: "自走型個人プレイヤー", verdict: "good", desc: "自走力高く明るい。専門職・個人成果型ポジションで活きる。" },
   "1100": { name: "職人型", verdict: "good", desc: "自走 × 個人深掘り × リスク管理。スペシャリスト向き。" },
@@ -63,11 +63,11 @@ export type AxisTier =
   | "tier-strong-minus";
 
 export function getAxisTier(net: number): { label: string; tier: AxisTier } {
-  if (net >= 10) return { label: "強い正極", tier: "tier-strong-plus" };
-  if (net >= 5) return { label: "正極寄り", tier: "tier-weak-plus" };
+  if (net >= 10) return { label: "強い正の傾向", tier: "tier-strong-plus" };
+  if (net >= 5) return { label: "正の傾向あり", tier: "tier-weak-plus" };
   if (net >= -4) return { label: "中立", tier: "tier-neutral" };
-  if (net >= -9) return { label: "負極寄り", tier: "tier-weak-minus" };
-  return { label: "強い負極", tier: "tier-strong-minus" };
+  if (net >= -9) return { label: "負の傾向あり", tier: "tier-weak-minus" };
+  return { label: "強い負の傾向", tier: "tier-strong-minus" };
 }
 
 export type PoleScores = Record<Pole, number>;

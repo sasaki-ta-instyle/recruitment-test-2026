@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { createInvite, deleteInvite, regenerateInviteToken } from "./actions";
@@ -187,7 +188,7 @@ export function InvitesClient({
                       {r.candidateId && (
                         <>
                           {" "}
-                          <a href={`/admin/${r.candidateId}`}>詳細</a>
+                          <Link href={`/admin/${r.candidateId}`}>詳細</Link>
                         </>
                       )}
                     </td>

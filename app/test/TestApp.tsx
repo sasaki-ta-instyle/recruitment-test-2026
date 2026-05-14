@@ -810,12 +810,11 @@ export default function TestApp({
       </div>
 
       <div className="result-hero">
-        <span className="eyebrow">あなたのタイプ</span>
-        <h1 className="result-type">{verdict.type.name}</h1>
-        <p className="result-type-desc">{verdict.type.desc}</p>
-        <span className={`verdict-badge verdict-${verdict.type.verdict}`}>
-          {VERDICT_LABEL[verdict.type.verdict]}
-        </span>
+        <span className="eyebrow">受験完了</span>
+        <h1 className="result-type">ご回答ありがとうございました</h1>
+        <p className="result-type-desc">
+          結果の判定は採用担当のみで取り扱います。受験者画面には判定内容を表示しません。
+        </p>
       </div>
 
       {timeUp && (
@@ -823,48 +822,6 @@ export default function TestApp({
           <strong>制限時間 60 分に到達：</strong>その時点までの回答内容で自動的に提出されました。
         </div>
       )}
-
-      {verdict.absoluteNg && (
-        <div className="flag-banner">
-          <strong>絶対 NG ルール該当：</strong>「自他」「素直さ」両軸が負側のため、
-          採用観点では特に注意が必要なプロファイルです。面接で前提を確認してください。
-        </div>
-      )}
-
-      <div className="axis-list">
-        <span className="match-pill">{MATCH_LABEL[verdict.matchStrength].label}</span>
-        <p className="result-lead">
-          {MATCH_LABEL[verdict.matchStrength].desc}
-        </p>
-        {axisNet.map((net, i) => {
-          const tier = tiers[i];
-          const pct = Math.max(5, Math.min(95, Math.round(((net + 20) / 40) * 100)));
-          const fromCenter = net >= 0;
-          const fillLeft = fromCenter ? 50 : pct;
-          const fillWidth = Math.abs(pct - 50);
-          return (
-            <div className={`axis-row ${tier.tier}`} key={i}>
-              <div className="axis-meta">
-                <span>{AXIS_NAMES[i]}</span>
-                <span className="axis-net">
-                  {net > 0 ? "+" : ""}
-                  {net}（{tier.label}）
-                </span>
-              </div>
-              <div className="axis-bar-track">
-                <div
-                  className="axis-bar-fill"
-                  style={{ left: `${fillLeft}%`, width: `${fillWidth}%` }}
-                />
-              </div>
-              <div className="axis-poles">
-                <span>{AXIS_LABELS[i][0]}</span>
-                <span>{AXIS_LABELS[i][1]}</span>
-              </div>
-            </div>
-          );
-        })}
-      </div>
 
       <div className="axis-list">
         <span className="eyebrow">受験完了情報</span>
@@ -874,7 +831,9 @@ export default function TestApp({
           受験者ID：{candidateId ?? (submitting ? "送信中..." : submitErr ? `送信エラー（${submitErr}）` : "未送信")}
         </p>
         <p className="result-meta">
-          結果は採用担当に共有されました。お疲れさまでした。
+          ご回答は採用担当に共有されました。お疲れさまでした。
+          {inviteToken &&
+            "この受験 URL は提出済みのため、再度アクセスしてもテストは表示されません。"}
         </p>
       </div>
     </main>
