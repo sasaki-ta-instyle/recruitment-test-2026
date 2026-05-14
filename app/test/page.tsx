@@ -23,6 +23,22 @@ type ShuffledOption = { letter: string; text: string; pole: Pole };
 
 const TIMER_SEC = 45;
 const TOTAL_SEC = 60 * 60;
+const STORAGE_KEY = "recruitment-test-2026:state-v1";
+
+type PersistedState = {
+  screen: Screen;
+  name: string;
+  shuffled: ShuffledOption[][];
+  p1Answers: Part1Answer[];
+  p1Locked: boolean[];
+  p1Idx: number;
+  poleScores: PoleScores;
+  p2Idx: number;
+  p2Answers: string[];
+  p2TimeSpent: number[];
+  startTimeMs: number | null;
+  timeUp: boolean;
+};
 
 function fmtMS(sec: number): string {
   sec = Math.max(0, Math.floor(sec));
@@ -86,6 +102,92 @@ export default function TestPage() {
       if (overallTimerRef.current) clearInterval(overallTimerRef.current);
     };
   }, []);
+
+  // ── localStorage 永続化：マウント時に復元 ─────────────
+  const [hydrated, setHydrated] = useState(false);
+  useEffect(() => {
+    if (typeof window === "undefined") {
+      setHydrated(true);
+      return;
+    }
+    try {
+      const raw = window.localStorage.getItem(STORAGE_KEY);
+      if (raw) {
+        const s = JSON.parse(raw) as PersistedState;
+        // 既に提出済みの結果画面 state はリセット
+        if (s.screen === "result") {
+          window.localStorage.removeItem(STORAGE_KEY);
+        } else if (s.screen === "intro") {
+          // intro までしか進んでいない場合は名前だけ復元（任意）
+          if (s.name) setName(s.name);
+        } else {
+          // p1 / transition / p2 のいずれかから再開
+          setName(s.name);
+          setShuffled(s.shuffled);
+          setP1Answers(s.p1Answers);
+          setP1Locked(s.p1Locked);
+          setP1Idx(s.p1Idx);
+          setPoleScores(s.poleScores);
+          setP2Idx(s.p2Idx);
+          setP2Answers(s.p2Answers);
+          setP2TimeSpent(s.p2TimeSpent);
+          setTimeUp(s.timeUp);
+          if (typeof s.startTimeMs === "number") {
+            startTimeRef.current = s.startTimeMs;
+            const e = Math.floor((Date.now() - s.startTimeMs) / 1000);
+            setElapsed(Math.min(e, TOTAL_SEC));
+            // 全体タイマーを再開
+            stopOverallTimer();
+            overallTimerRef.current = setInterval(() => {
+              if (!startTimeRef.current) return;
+              const cur = Math.floor((Date.now() - startTimeRef.current) / 1000);
+              setElapsed(Math.min(cur, TOTAL_SEC));
+            }, 1000);
+          }
+          setScreen(s.screen);
+        }
+      }
+    } catch {
+      // 破損した state は無視して新規開始
+    } finally {
+      setHydrated(true);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // ── localStorage 永続化：state 変更で書き込み ─────────
+  useEffect(() => {
+    if (!hydrated) return;
+    if (typeof window === "undefined") return;
+    // result 画面到達後は state を捨てる（次の受験者のため）
+    if (screen === "result") {
+      try {
+        window.localStorage.removeItem(STORAGE_KEY);
+      } catch {}
+      return;
+    }
+    // intro 画面で名前未入力なら保存しない
+    if (screen === "intro" && !name) return;
+    try {
+      const state: PersistedState = {
+        screen,
+        name,
+        shuffled,
+        p1Answers,
+        p1Locked,
+        p1Idx,
+        poleScores,
+        p2Idx,
+        p2Answers,
+        p2TimeSpent,
+        startTimeMs: startTimeRef.current,
+        timeUp,
+      };
+      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    } catch {
+      // QuotaExceeded など。失敗しても続行
+    }
+  }, [hydrated, screen, name, shuffled, p1Answers, p1Locked, p1Idx, poleScores, p2Idx, p2Answers, p2TimeSpent, timeUp]);
 
   // ── Helpers ─────────────────────────────────────────────
   const stopPerQTimer = () => {

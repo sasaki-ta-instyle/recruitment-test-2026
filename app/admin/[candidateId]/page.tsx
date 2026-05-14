@@ -13,6 +13,7 @@ import {
 } from "@/lib/scoring";
 import { Part2Section } from "./Part2Section";
 import { PrintButton } from "./PrintButton";
+import { NotesEditor } from "./NotesEditor";
 
 export const dynamic = "force-dynamic";
 
@@ -207,6 +208,8 @@ export default async function CandidateDetailPage({
           score: a.score,
         }))}
       />
+
+      <NotesEditor candidateId={c.id} initial={c.interviewerNotes ?? ""} />
     </main>
   );
 }

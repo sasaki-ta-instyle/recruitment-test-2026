@@ -35,3 +35,20 @@ export async function saveScore(input: {
   revalidatePath(`/admin/${input.candidateId}`);
   return { ok: true };
 }
+
+export async function saveNotes(input: {
+  candidateId: string;
+  notes: string;
+}): Promise<{ ok: true } | { ok: false; error: string }> {
+  if (!input.candidateId || typeof input.candidateId !== "string") {
+    return { ok: false, error: "invalid candidateId" };
+  }
+  const trimmed = (input.notes ?? "").slice(0, 20000);
+  await prisma.candidate.update({
+    where: { id: input.candidateId },
+    data: { interviewerNotes: trimmed.length === 0 ? null : trimmed },
+  });
+  // 採点シートの一部なので path を invalidate するが、autosave 中の
+  // 連続更新を避けるためここでは revalidate しない（保存だけ）。
+  return { ok: true };
+}

@@ -859,6 +859,24 @@ button:focus-visible { outline: 2px solid var(--color-info); outline-offset: 2px
     font-size: 9px;
   }
   .match-pill { font-size: 9px; padding: 2px 8px; }
+
+  /* notes：印刷時は textarea を隠してメモ本文を表示 */
+  .notes-textarea { display: none; }
+  .notes-print { display: block; }
+  .notes-print-body {
+    font-size: 11px;
+    line-height: 1.7;
+    white-space: pre-wrap;
+    background: rgba(0,0,0,0.04);
+    padding: 8px 10px;
+    border-radius: 4px;
+  }
+  .notes-print-empty {
+    font-size: 10px;
+    color: #666;
+    font-style: italic;
+  }
+  .notes-status { display: none; }
 }
 
 /* ── Admin: 詳細ヘッダー / サマリ ────────────────────── */
@@ -1223,6 +1241,44 @@ button:focus-visible { outline: 2px solid var(--color-info); outline-offset: 2px
 }
 .th-sort:hover { color: var(--color-text); }
 .th-sort:focus-visible { outline: 2px solid var(--color-info); outline-offset: 2px; }
+
+/* ── Notes editor（面接官メモ） ─────────────────────── */
+.notes-card { padding-top: 20px; }
+.notes-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+.notes-status {
+  font-family: var(--font-display);
+  font-size: 0.6875rem;
+  letter-spacing: 0.04em;
+  color: var(--color-text-muted);
+}
+.notes-status-saving { color: var(--color-info); }
+.notes-status-saved  { color: var(--color-success); }
+.notes-status-error  { color: var(--color-error); }
+.notes-textarea {
+  width: 100%;
+  min-height: 140px;
+  padding: 12px 14px;
+  background: var(--color-bg);
+  border: none;
+  border-radius: var(--r-btn);
+  font-family: var(--font-sans);
+  font-size: 0.9375rem;
+  line-height: 1.85;
+  color: var(--color-text);
+  resize: vertical;
+  outline: none;
+  box-shadow: 0 0 0 1px var(--color-surface-2);
+  transition: box-shadow var(--t-fast);
+}
+.notes-textarea:focus { box-shadow: 0 0 0 3px rgba(53,54,45,0.18); }
+.notes-print { display: none; }   /* スクリーンでは非表示 */
 
 .admin-checkbox-cell { width: 36px; padding-right: 0 !important; }
 .admin-checkbox-cell input[type="checkbox"] {

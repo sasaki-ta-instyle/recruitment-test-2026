@@ -17,6 +17,8 @@ model Candidate {
   elapsedSec    Int           @default(0)
   // null=アクティブ。値があれば「アーカイブ済み」。削除は cascade で物理削除する。
   archivedAt    DateTime?
+  // 面接官メモ（自由記述）。autosave で /admin/[id] から更新される。
+  interviewerNotes String?
   part1Answers  Part1Answer[]
   part2Answers  Part2Answer[]
   score         Score?
