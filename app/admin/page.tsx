@@ -60,7 +60,8 @@ export default async function AdminPage({
             : "アーカイブ済みの受験者一覧。"}
         </p>
         <div className="admin-toolbar">
-          <Link className="admin-link" href="/admin/settings">受験設定</Link>
+          <Link className="admin-link" href="/admin/invites">受験 URL 発行</Link>
+          <Link className="admin-link" href="/admin/settings">受験設定（全体）</Link>
           <Link className="admin-link" href="/admin/reference">採点リファレンス</Link>
           <Link className="admin-link" href="/interviewer-guide">面接官ガイド</Link>
           <a className="admin-link" href="/api/admin/export.csv" download>

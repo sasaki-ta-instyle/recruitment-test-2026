@@ -23,6 +23,7 @@ model Candidate {
   part2Answers  Part2Answer[]
   score         Score?
   questionNotes QuestionNote[]
+  invite        TestInvite?
 
   @@index([submittedAt])
   @@index([archivedAt])
@@ -71,6 +72,25 @@ model QuestionNote {
 
   @@unique([candidateId, scope])
   @@index([candidateId])
+}
+
+// 受験者ごとに個別の URL とテスト時間窓を発行する。
+// /test?t=<token> でアクセスし、その invite 固有の openAt〜closeAt の間だけ受験可能。
+// 提出後に candidateId が紐づき、同じ URL は再利用不可になる。
+model TestInvite {
+  id          String     @id @default(cuid())
+  token       String     @unique
+  label       String     // 受験者識別用（氏名予定 / 案件名 etc.）
+  openAt      DateTime?
+  closeAt     DateTime?
+  message     String?
+  candidateId String?    @unique
+  candidate   Candidate? @relation(fields: [candidateId], references: [id], onDelete: SetNull)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  @@index([token])
+  @@index([createdAt])
 }
 
 // テスト受験時間の窓（シングルトン: id="singleton" の 1 行のみ運用）。

@@ -24,6 +24,7 @@ type SubmitBody = {
     elapsedSec: number;
   }>;
   poleScores: PoleScores;
+  inviteToken?: string | null;
 };
 
 function sanitizePoleScores(raw: unknown): PoleScores {
@@ -100,6 +101,19 @@ export async function POST(req: Request) {
       },
       select: { id: true },
     });
+
+    // 個別 URL（invite）経由なら、その invite を「使用済み」にしてこの候補者と紐付ける
+    if (body.inviteToken && typeof body.inviteToken === "string") {
+      try {
+        await prisma.testInvite.updateMany({
+          where: { token: body.inviteToken, candidateId: null },
+          data: { candidateId: created.id },
+        });
+      } catch {
+        // invite 紐付け失敗は致命でないので無視（受験記録は既に作成済み）
+      }
+    }
+
     return NextResponse.json({ id: created.id });
   } catch (e: unknown) {
     const msg = e instanceof Error ? e.message : String(e);

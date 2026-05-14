@@ -59,16 +59,20 @@ function fisherYates<T>(arr: T[]): T[] {
 export default function TestApp({
   closeAtIso = null,
   serverNowMs = Date.now(),
+  inviteToken = null,
+  prefilledName = "",
 }: {
   closeAtIso?: string | null;
   serverNowMs?: number;
+  inviteToken?: string | null;
+  prefilledName?: string;
 } = {}) {
   // 受験時間窓の終了時刻（closeAt）に到達したら強制提出
   const windowCloseMs = closeAtIso ? new Date(closeAtIso).getTime() : null;
   const serverClientOffset = Date.now() - serverNowMs;
   // クライアントの time が closeAt を過ぎたら force finish
   const [screen, setScreen] = useState<Screen>("intro");
-  const [name, setName] = useState("");
+  const [name, setName] = useState(prefilledName);
   const [nameErr, setNameErr] = useState(false);
 
   // Part 1 state
@@ -528,6 +532,7 @@ export default function TestApp({
           elapsedSec: p2TimeSpent[i] ?? 0,
         })),
         poleScores,
+        inviteToken,
       };
 
       const res = await fetch("/recruitment-test-2026/api/submit", {
