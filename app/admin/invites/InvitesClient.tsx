@@ -49,7 +49,6 @@ export function InvitesClient({
   const [label, setLabel] = useState("");
   const [openAt, setOpenAt] = useState("");
   const [closeAt, setCloseAt] = useState("");
-  const [message, setMessage] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [copiedId, setCopiedId] = useState<string | null>(null);
 
@@ -57,7 +56,6 @@ export function InvitesClient({
     setLabel("");
     setOpenAt("");
     setCloseAt("");
-    setMessage("");
   }
 
   function submit(e: React.FormEvent) {
@@ -68,7 +66,7 @@ export function InvitesClient({
         label,
         openAt: openAt || null,
         closeAt: closeAt || null,
-        message: message || null,
+        message: null,
       });
       if (res.ok) {
         reset();
@@ -144,16 +142,6 @@ export function InvitesClient({
               />
             </label>
           </div>
-          <label className="settings-field">
-            <span className="settings-label">メッセージ（任意・受験者画面に表示）</span>
-            <textarea
-              className="settings-textarea"
-              rows={2}
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-              placeholder="例：本日 14:00〜15:00 です。落ち着いて取り組んでください。"
-            />
-          </label>
           <div className="settings-actions">
             <button type="submit" className="btn-primary" disabled={isPending || !label.trim()}>
               {isPending ? "発行中..." : "受験 URL を発行"}
