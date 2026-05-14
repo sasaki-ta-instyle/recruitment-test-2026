@@ -6,7 +6,7 @@ import type { NextRequest } from "next/server";
 // but the username is ignored — only BASIC_AUTH_PASS is checked.
 // If BASIC_AUTH_PASS is missing in local dev, we let everything through (with a console warn).
 
-const PROTECTED_PREFIXES = ["/interviewer-guide", "/admin"];
+const PROTECTED_PREFIXES = ["/interviewer-guide", "/admin", "/api/admin"];
 const REALM = "recruitment-test-2026";
 
 export function middleware(req: NextRequest) {
@@ -45,5 +45,5 @@ export function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/interviewer-guide/:path*", "/admin/:path*"],
+  matcher: ["/interviewer-guide/:path*", "/admin/:path*", "/api/admin/:path*"],
 };

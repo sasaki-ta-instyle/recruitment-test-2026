@@ -38,6 +38,12 @@ export default async function AdminPage() {
         <p style={{ fontSize: "0.875rem", color: "var(--color-text-muted)", marginTop: 8 }}>
           直近 200 件の受験者を表示。氏名をクリックで詳細ページへ。
         </p>
+        <div className="admin-toolbar">
+          <Link className="admin-link" href="/admin/reference">採点リファレンス</Link>
+          <a className="admin-link" href="/api/admin/export.csv" download>
+            CSV ダウンロード（{candidates.length} 件）
+          </a>
+        </div>
       </header>
 
       <div className="admin-card">

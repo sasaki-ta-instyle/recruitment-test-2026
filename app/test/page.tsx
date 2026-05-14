@@ -622,7 +622,7 @@ export default function TestPage() {
 
       <div className="axis-list">
         <span className="match-pill">{MATCH_LABEL[verdict.matchStrength].label}</span>
-        <p style={{ fontSize: "0.875rem", color: "var(--color-text-muted)", marginBottom: 16, lineHeight: 1.7 }}>
+        <p className="result-lead">
           {MATCH_LABEL[verdict.matchStrength].desc}
         </p>
         {axisNet.map((net, i) => {
@@ -657,12 +657,12 @@ export default function TestPage() {
 
       <div className="axis-list">
         <span className="eyebrow">受験完了情報</span>
-        <p style={{ fontSize: "0.875rem", color: "var(--color-text-muted)", marginTop: 8, lineHeight: 1.7 }}>
+        <p className="result-meta">
           所要時間：{fmtMS(totalElapsed)}（制限 60:00）
           <br />
           受験者ID：{candidateId ?? (submitting ? "送信中..." : submitErr ? `送信エラー（${submitErr}）` : "未送信")}
         </p>
-        <p style={{ fontSize: "0.8125rem", color: "var(--color-text-muted)", marginTop: 12, lineHeight: 1.7 }}>
+        <p className="result-meta">
           結果は採用担当に共有されました。お疲れさまでした。
         </p>
       </div>

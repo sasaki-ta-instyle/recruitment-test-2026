@@ -11,6 +11,7 @@ import {
   type MatchStrength,
   type Verdict,
 } from "@/lib/scoring";
+import { Part2Section } from "./Part2Section";
 
 export const dynamic = "force-dynamic";
 
@@ -43,8 +44,9 @@ export default async function CandidateDetailPage({
 
   return (
     <main className="wide-shell">
-      <p className="no-print" style={{ marginBottom: 12 }}>
+      <p className="no-print admin-detail-nav" style={{ marginBottom: 12 }}>
         <Link href="/admin">← 一覧に戻る</Link>
+        <Link href="/admin/reference">採点リファレンスを開く →</Link>
       </p>
 
       <header style={{ marginBottom: 24 }}>
@@ -124,26 +126,17 @@ export default async function CandidateDetailPage({
         </table>
       </section>
 
-      <section className="admin-card">
-        <h2 style={{ fontSize: "1.125rem", marginBottom: 12 }}>Part 2 記述</h2>
-        {PART2.map((q) => {
-          const a = c.part2Answers.find((p) => p.questionId === q.id);
-          return (
-            <div key={q.id} style={{ marginBottom: 20, paddingBottom: 16, borderBottom: "1px solid var(--color-surface-2)" }}>
-              <div style={{ display: "flex", justifyContent: "space-between", gap: 12, marginBottom: 6 }}>
-                <span className="eyebrow">{q.id} ／ {q.theme}</span>
-                <span style={{ fontSize: "0.75rem", color: "var(--color-text-muted)" }}>
-                  {a ? `${a.charCount} 字 ・ ${fmtElapsed(a.elapsedSec)}` : "未回答"}
-                </span>
-              </div>
-              <div style={{ fontSize: "0.9375rem", marginBottom: 8 }}>{q.text}</div>
-              <div style={{ fontSize: "0.875rem", lineHeight: 1.85, whiteSpace: "pre-wrap", background: "var(--color-bg)", padding: "12px 14px", borderRadius: "var(--r)" }}>
-                {a?.bodyText ?? "（無回答）"}
-              </div>
-            </div>
-          );
-        })}
-      </section>
+      <Part2Section
+        candidateId={c.id}
+        questions={PART2}
+        answers={c.part2Answers.map((a) => ({
+          questionId: a.questionId,
+          bodyText: a.bodyText,
+          charCount: a.charCount,
+          elapsedSec: a.elapsedSec,
+          score: a.score,
+        }))}
+      />
     </main>
   );
 }

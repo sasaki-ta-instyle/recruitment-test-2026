@@ -148,10 +148,10 @@ pm2 reload app-recruitment-test-2026 --update-env
 
 | # | 内容 | 状態 |
 |---|---|---|
-| 1 | フラットDSの最終UI検証（受験者ページの可読性、ガイドの印刷品質） | pending |
-| 2 | Part 2 各問の採点入力UI（10/7/4/0）と合計100点表示を admin に追加 | future |
-| 3 | 旧 `instyle_admin_reference.html` の per-question 解説の取り込み | future |
-| 4 | CSV エクスポート（admin → 受験者一括ダウンロード） | future |
+| 1 | フラットDSの最終UI検証（受験者ページの可読性、ガイドの印刷品質） | done |
+| 2 | Part 2 各問の採点入力UI（10/7/4/0）と合計100点表示を admin に追加 | done |
+| 3 | 旧 `instyle_admin_reference.html` の per-question 解説の取り込み | done |
+| 4 | CSV エクスポート（admin → 受験者一括ダウンロード） | done |
 
 ---
 

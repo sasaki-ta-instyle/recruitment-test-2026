@@ -47,6 +47,8 @@ model Part2Answer {
   bodyText      String
   charCount     Int       @default(0)
   elapsedSec    Int       @default(0)
+  // 面接官が後から付ける Part2 採点（10/7/4/0 のいずれか）。未採点は null。
+  score         Int?
 
   @@unique([candidateId, questionId])
 }
