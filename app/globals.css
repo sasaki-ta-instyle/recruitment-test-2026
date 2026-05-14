@@ -557,7 +557,7 @@ button:focus-visible { outline: 2px solid var(--color-info); outline-offset: 2px
   font-weight: 700;
   letter-spacing: 0.06em;
   line-height: 1;
-  margin-top: 12px;
+  vertical-align: middle;
 }
 .verdict-good-deep { background: #2F5C2B; color: #FFFFFF; }
 .verdict-good      { background: #5C7A3F; color: #FFFFFF; }
@@ -617,7 +617,7 @@ button:focus-visible { outline: 2px solid var(--color-info); outline-offset: 2px
   font-weight: 700;
   letter-spacing: 0.04em;
   line-height: 1;
-  margin-bottom: 8px;
+  vertical-align: middle;
 }
 
 .result-lead {
