@@ -1,6 +1,5 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 
 function parseLocalDateTime(value: string | null): Date | null {
@@ -16,35 +15,41 @@ export async function saveTestWindow(input: {
   closeAt: string | null;
   message: string | null;
 }): Promise<{ ok: true } | { ok: false; error: string }> {
-  const openAt = parseLocalDateTime(input.openAt);
-  const closeAt = parseLocalDateTime(input.closeAt);
+  try {
+    const openAt = parseLocalDateTime(input.openAt);
+    const closeAt = parseLocalDateTime(input.closeAt);
 
-  if (openAt && closeAt && closeAt <= openAt) {
-    return { ok: false, error: "終了時刻は開始時刻より後にしてください" };
+    if (openAt && closeAt && closeAt <= openAt) {
+      return { ok: false, error: "終了時刻は開始時刻より後にしてください" };
+    }
+
+    const message = (input.message ?? "").slice(0, 1000) || null;
+
+    await prisma.testWindow.upsert({
+      where: { id: "singleton" },
+      update: { openAt, closeAt, message },
+      create: { id: "singleton", openAt, closeAt, message },
+    });
+    // / と /test と /admin/settings はすべて dynamic = "force-dynamic"
+    // のため、明示的な revalidatePath は不要。client 側の router.refresh()
+    // で /admin/settings 自身は再フェッチされる。
+    return { ok: true };
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : String(e);
+    return { ok: false, error: msg };
   }
-
-  const message = (input.message ?? "").slice(0, 1000) || null;
-
-  await prisma.testWindow.upsert({
-    where: { id: "singleton" },
-    update: { openAt, closeAt, message },
-    create: { id: "singleton", openAt, closeAt, message },
-  });
-
-  revalidatePath("/admin/settings");
-  revalidatePath("/");
-  revalidatePath("/test");
-  return { ok: true };
 }
 
-export async function clearTestWindow(): Promise<{ ok: true }> {
-  await prisma.testWindow.upsert({
-    where: { id: "singleton" },
-    update: { openAt: null, closeAt: null, message: null },
-    create: { id: "singleton", openAt: null, closeAt: null, message: null },
-  });
-  revalidatePath("/admin/settings");
-  revalidatePath("/");
-  revalidatePath("/test");
-  return { ok: true };
+export async function clearTestWindow(): Promise<{ ok: true } | { ok: false; error: string }> {
+  try {
+    await prisma.testWindow.upsert({
+      where: { id: "singleton" },
+      update: { openAt: null, closeAt: null, message: null },
+      create: { id: "singleton", openAt: null, closeAt: null, message: null },
+    });
+    return { ok: true };
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : String(e);
+    return { ok: false, error: msg };
+  }
 }
