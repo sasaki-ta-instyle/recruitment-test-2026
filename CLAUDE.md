@@ -43,10 +43,9 @@ INSTYLE GROUP 採用カルチャーテスト 2026（v6 ipsative）。受験者�
 | キー | 用途 | 必須 |
 |---|---|---|
 | `DATABASE_URL` | PostgreSQL 接続文字列 | ✓ |
-| `BASIC_AUTH_USER` | 面接官ページ Basic 認証 | ✓（本番） |
-| `BASIC_AUTH_PASS` | 同上 | ✓（本番） |
+| `BASIC_AUTH_PASS` | 面接官ページ用の単一パスワード（ユーザー名フィールドは無視） | ✓（本番） |
 
-開発時に `BASIC_AUTH_*` が未設定なら、middleware は警告ログを出して通す（`NODE_ENV !== 'production'` のみ）。
+`/interviewer-guide` と `/admin` は HTTP Basic 認証のプロンプトを使うが、ユーザー名側は中身を見ず **`BASIC_AUTH_PASS` だけで照合**する。開発時に `BASIC_AUTH_PASS` が未設定なら middleware は警告ログを出して通す（`NODE_ENV !== 'production'` のみ）。
 
 ## デザインシステム
 
@@ -80,7 +79,7 @@ ssh conoha-deploy 'mkdir -p /var/www/app/recruitment-test-2026/{releases,shared}
   && touch /var/www/_shared/apps/app-recruitment-test-2026.env \
   && chmod 600 /var/www/_shared/apps/app-recruitment-test-2026.env'
 
-# 2. 共有 env に DATABASE_URL / BASIC_AUTH_USER / BASIC_AUTH_PASS を追記
+# 2. 共有 env に DATABASE_URL / BASIC_AUTH_PASS を追記（USER は不要）
 ssh conoha-deploy 'vi /var/www/_shared/apps/app-recruitment-test-2026.env'
 
 # 3. PostgreSQL DB 作成（ConoHa 上）

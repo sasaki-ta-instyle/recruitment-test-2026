@@ -62,7 +62,7 @@ pnpm install
 ```bash
 cp .env.example .env.local
 # DATABASE_URL は postgresql://<user>:<pw>@localhost:5432/recruitment_test_2026?schema=public
-# BASIC_AUTH_USER / BASIC_AUTH_PASS は 1Password から取得（共有メモ：「採用テスト面接官ログイン」）
+# BASIC_AUTH_PASS は 1Password から取得（共有メモ：「採用テスト面接官ログイン」）。ユーザー名は使わない単一パスワード運用。
 ```
 
 ### 2.5 DB を初期化
