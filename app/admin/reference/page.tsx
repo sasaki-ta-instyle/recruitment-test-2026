@@ -70,9 +70,9 @@ export default function AdminReferencePage() {
         <Link href="/admin">← 一覧に戻る</Link>
       </p>
 
-      <header style={{ marginBottom: 24 }}>
+      <header className="admin-detail-header">
         <span className="eyebrow">採点リファレンス</span>
-        <h1 style={{ fontSize: "1.5rem", marginTop: 6 }}>
+        <h1 className="admin-detail-name" style={{ fontSize: "1.5rem", fontWeight: 500 }}>
           INSTYLE GROUP カルチャーテスト — 採点リファレンス
         </h1>
         <p className="ref-lead">

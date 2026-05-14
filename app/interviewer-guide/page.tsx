@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { TYPE_MAP, VERDICT_LABEL } from "@/lib/scoring";
-import { Logo } from "@/app/_components/Logo";
 
 export const metadata = {
   title: "面接官ガイド | INSTYLE GROUP 採用カルチャーテスト",
@@ -20,10 +19,12 @@ export default function InterviewerGuidePage() {
       <div className="no-print admin-detail-nav" style={{ marginBottom: 12 }}>
         <Link href="/admin">← 受験者ダッシュボード</Link>
       </div>
-      <header style={{ marginBottom: 24 }}>
-        <Logo height={14} />
-        <h1 style={{ fontSize: "1.625rem", marginTop: 8 }}>採用カルチャーテスト 面接官ガイド</h1>
-        <p style={{ fontSize: "0.9375rem", color: "var(--color-text-muted)", marginTop: 8, lineHeight: 1.8 }}>
+      <header className="admin-detail-header">
+        <span className="eyebrow">面接官ガイド</span>
+        <h1 className="admin-detail-name" style={{ fontSize: "1.5rem", fontWeight: 500 }}>
+          採用カルチャーテスト 面接官ガイド
+        </h1>
+        <p className="admin-detail-meta">
           v6（イプサティブ評価 4 選択肢 × 4 軸 × 16 タイプ）。Part 1 は性格傾向の自動判定、Part 2 は INSTYLE 思想との接続度の人手採点。
         </p>
       </header>
