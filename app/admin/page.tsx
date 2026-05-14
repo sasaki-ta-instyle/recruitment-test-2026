@@ -40,6 +40,7 @@ export default async function AdminPage({
           axisContrib: c.score.axisContrib,
           axisPositive: c.score.axisPositive,
           typeName: c.score.typeName,
+          matchStrength: c.score.matchStrength,
           matchStrengthLabel:
             MATCH_LABEL[c.score.matchStrength as MatchStrength]?.label ?? c.score.matchStrength,
           verdict: c.score.verdict,

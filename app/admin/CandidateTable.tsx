@@ -1,9 +1,34 @@
 "use client";
 
 import Link from "next/link";
-import { useState, useTransition } from "react";
+import { useMemo, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { archiveCandidates, deleteCandidates, unarchiveCandidates } from "./actions";
+
+type SortKey =
+  | "submittedAt"
+  | "name"
+  | "axisSum"
+  | "typeName"
+  | "matchStrength"
+  | "verdict"
+  | "elapsedSec";
+
+const VERDICT_ORDER: Record<string, number> = {
+  "good-deep": 6,
+  good: 5,
+  develop: 4,
+  review: 3,
+  warn: 2,
+  ng: 1,
+};
+const MATCH_ORDER: Record<string, number> = {
+  strong: 5,
+  clear: 4,
+  mid: 3,
+  weak: 2,
+  hold: 1,
+};
 
 export type CandidateRow = {
   id: string;
@@ -17,6 +42,7 @@ export type CandidateRow = {
     axisContrib: number;
     axisPositive: number;
     typeName: string;
+    matchStrength: string;
     matchStrengthLabel: string;
     verdict: string;
     verdictLabel: string;
@@ -54,6 +80,75 @@ export function CandidateTable({
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
+
+  const [sortKey, setSortKey] = useState<SortKey>("submittedAt");
+  const [sortDir, setSortDir] = useState<"asc" | "desc">("desc");
+
+  function toggleSort(key: SortKey) {
+    if (sortKey === key) {
+      setSortDir((d) => (d === "asc" ? "desc" : "asc"));
+    } else {
+      setSortKey(key);
+      // 日付・所要は新しい/長い順、それ以外は昇順をデフォルトに
+      setSortDir(key === "submittedAt" || key === "elapsedSec" ? "desc" : "asc");
+    }
+  }
+
+  const sortedRows = useMemo(() => {
+    const arr = [...rows];
+    const cmp = (a: CandidateRow, b: CandidateRow) => {
+      let va: number | string;
+      let vb: number | string;
+      switch (sortKey) {
+        case "submittedAt":
+          va = new Date(a.submittedAt).getTime();
+          vb = new Date(b.submittedAt).getTime();
+          break;
+        case "name":
+          va = a.name;
+          vb = b.name;
+          break;
+        case "axisSum":
+          va = a.score
+            ? a.score.axisSelf + a.score.axisSunao + a.score.axisContrib + a.score.axisPositive
+            : -Infinity;
+          vb = b.score
+            ? b.score.axisSelf + b.score.axisSunao + b.score.axisContrib + b.score.axisPositive
+            : -Infinity;
+          break;
+        case "typeName":
+          va = a.score?.typeName ?? "";
+          vb = b.score?.typeName ?? "";
+          break;
+        case "matchStrength":
+          va = a.score ? MATCH_ORDER[a.score.matchStrength] ?? 0 : 0;
+          vb = b.score ? MATCH_ORDER[b.score.matchStrength] ?? 0 : 0;
+          break;
+        case "verdict":
+          va = a.score ? VERDICT_ORDER[a.score.verdict] ?? 0 : 0;
+          vb = b.score ? VERDICT_ORDER[b.score.verdict] ?? 0 : 0;
+          break;
+        case "elapsedSec":
+          va = a.elapsedSec;
+          vb = b.elapsedSec;
+          break;
+      }
+      if (typeof va === "string" && typeof vb === "string") {
+        return va.localeCompare(vb, "ja");
+      }
+      return (va as number) - (vb as number);
+    };
+    arr.sort((a, b) => {
+      const v = cmp(a, b);
+      return sortDir === "asc" ? v : -v;
+    });
+    return arr;
+  }, [rows, sortKey, sortDir]);
+
+  function arrow(key: SortKey) {
+    if (sortKey !== key) return "";
+    return sortDir === "asc" ? " ↑" : " ↓";
+  }
 
   const allSelected = rows.length > 0 && selected.size === rows.length;
   const someSelected = selected.size > 0 && selected.size < rows.length;
@@ -175,17 +270,45 @@ export function CandidateTable({
                     aria-label="全選択"
                   />
                 </th>
-                <th>受験日時</th>
-                <th>氏名</th>
-                <th>4 軸スコア</th>
-                <th>タイプ</th>
-                <th>マッチ</th>
-                <th>判定</th>
-                <th>所要</th>
+                <th>
+                  <button type="button" className="th-sort" onClick={() => toggleSort("submittedAt")}>
+                    受験日時{arrow("submittedAt")}
+                  </button>
+                </th>
+                <th>
+                  <button type="button" className="th-sort" onClick={() => toggleSort("name")}>
+                    氏名{arrow("name")}
+                  </button>
+                </th>
+                <th>
+                  <button type="button" className="th-sort" onClick={() => toggleSort("axisSum")}>
+                    4 軸スコア{arrow("axisSum")}
+                  </button>
+                </th>
+                <th>
+                  <button type="button" className="th-sort" onClick={() => toggleSort("typeName")}>
+                    タイプ{arrow("typeName")}
+                  </button>
+                </th>
+                <th>
+                  <button type="button" className="th-sort" onClick={() => toggleSort("matchStrength")}>
+                    マッチ{arrow("matchStrength")}
+                  </button>
+                </th>
+                <th>
+                  <button type="button" className="th-sort" onClick={() => toggleSort("verdict")}>
+                    判定{arrow("verdict")}
+                  </button>
+                </th>
+                <th>
+                  <button type="button" className="th-sort" onClick={() => toggleSort("elapsedSec")}>
+                    所要{arrow("elapsedSec")}
+                  </button>
+                </th>
               </tr>
             </thead>
             <tbody>
-              {rows.map((c) => {
+              {sortedRows.map((c) => {
                 const s = c.score;
                 const isSelected = selected.has(c.id);
                 return (
