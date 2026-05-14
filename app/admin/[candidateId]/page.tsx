@@ -169,8 +169,8 @@ export default async function CandidateDetailPage({
                 : null;
               return (
                 <tr key={q.id}>
-                  <td style={{ fontFamily: "var(--font-display)" }}>Q{String(i + 1).padStart(2, "0")}</td>
-                  <td style={{ fontSize: "0.75rem", color: "var(--color-text-muted)" }}>{q.axes}</td>
+                  <td style={{ fontFamily: "var(--font-display)", whiteSpace: "nowrap" }}>Q{String(i + 1).padStart(2, "0")}</td>
+                  <td style={{ fontSize: "0.75rem", color: "var(--color-text-muted)", whiteSpace: "nowrap" }}>{q.axes}</td>
                   <td style={{ fontSize: "0.8125rem", lineHeight: 1.6 }}>{q.text}</td>
                   <td>
                     <div className={`answer-cell ${a?.closestPole ? "is-close" : ""}`}>
