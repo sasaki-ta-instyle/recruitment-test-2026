@@ -8,7 +8,7 @@ INSTYLE GROUP 採用カルチャーテスト 2026（v6 ipsative）。受験者�
 |---|---|
 | CATEGORY | `app` |
 | APP_NAME | `recruitment-test-2026` |
-| PORT | `3006` |
+| PORT | `3007` |
 | 公開URL | `https://app.instyle.group/recruitment-test-2026/` |
 | HEALTHCHECK_PATH | `/recruitment-test-2026/api/health` |
 | USE_DB | `true` |
@@ -61,7 +61,7 @@ cp .env.example .env.local
 # .env.local の DATABASE_URL と BASIC_AUTH_* を埋める
 pnpm prisma migrate dev --name init   # DB を初期化
 pnpm dev
-# http://localhost:3006/recruitment-test-2026/ でアクセス
+# http://localhost:3007/recruitment-test-2026/ でアクセス
 ```
 
 ### 出典
@@ -92,11 +92,11 @@ ssh conoha-root 'sudo -u postgres psql -c "CREATE DATABASE recruitment_test_2026
 ssh conoha-root 'cat > /etc/nginx/conf.d/proxy-apps/app/recruitment-test-2026.conf <<"EOF"
 location = /recruitment-test-2026 {
   include snippets/proxy-next.conf;
-  proxy_pass http://127.0.0.1:3006;
+  proxy_pass http://127.0.0.1:3007;
 }
 location ^~ /recruitment-test-2026/ {
   include snippets/proxy-next.conf;
-  proxy_pass http://127.0.0.1:3006;
+  proxy_pass http://127.0.0.1:3007;
 }
 EOF
 nginx -t && systemctl reload nginx'

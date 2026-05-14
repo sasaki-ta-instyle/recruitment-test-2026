@@ -17,7 +17,7 @@
 | ConoHa デプロイ先 | `/var/www/app/recruitment-test-2026/` |
 | 共有 env | `/var/www/_shared/apps/app-recruitment-test-2026.env`（chmod 600） |
 | PM2 名 | `app-recruitment-test-2026` |
-| ポート | `3006` |
+| ポート | `3007` |
 | Healthcheck | `/recruitment-test-2026/api/health` |
 | USE_DB | `true`（PostgreSQL + Prisma） |
 
@@ -76,7 +76,7 @@ pnpm prisma migrate dev --name init
 
 ```bash
 pnpm dev
-# → http://localhost:3006/recruitment-test-2026/
+# → http://localhost:3007/recruitment-test-2026/
 ```
 
 ---
