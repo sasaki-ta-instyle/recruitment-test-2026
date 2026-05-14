@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
 const SITE_URL = "https://app.instyle.group/recruitment-test-2026";
@@ -31,6 +31,12 @@ export const metadata: Metadata = {
     images: [`${ASSETS}/ogp.jpg`],
   },
   robots: { index: false, follow: false },
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: "#FFFFFF",
 };
 
 export default function RootLayout({

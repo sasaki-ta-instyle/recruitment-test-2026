@@ -405,11 +405,13 @@ export default function TestPage() {
             <br />
             模範解答を探さず、ご自身の自然な感覚で答えてください。
           </p>
-          <div style={{ maxWidth: 320, margin: "0 auto" }}>
+          <div className="landing-cta">
             <input
               type="text"
               className="name-input"
               placeholder="お名前（フルネーム）"
+              autoComplete="name"
+              inputMode="text"
               value={name}
               onChange={(e) => {
                 setName(e.target.value);

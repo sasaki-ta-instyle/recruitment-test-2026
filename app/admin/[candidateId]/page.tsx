@@ -49,18 +49,18 @@ export default async function CandidateDetailPage({
         <Link href="/admin/reference">採点リファレンスを開く →</Link>
       </p>
 
-      <header style={{ marginBottom: 24 }}>
+      <header className="admin-detail-header">
         <span className="eyebrow">受験者詳細</span>
-        <h1 style={{ fontSize: "1.5rem", marginTop: 6 }}>{c.name}</h1>
-        <p style={{ fontSize: "0.875rem", color: "var(--color-text-muted)", marginTop: 6 }}>
+        <h1 className="admin-detail-name">{c.name}</h1>
+        <p className="admin-detail-meta">
           提出 {new Date(c.submittedAt).toLocaleString("ja-JP")} ・ 所要 {fmtElapsed(c.elapsedSec)}
         </p>
       </header>
 
       {c.score && (
         <div className="admin-card">
-          <div style={{ display: "flex", flexWrap: "wrap", gap: 12, alignItems: "center", marginBottom: 16 }}>
-            <h2 style={{ fontSize: "1.25rem" }}>{c.score.typeName}</h2>
+          <div className="admin-summary-row">
+            <h2 className="admin-summary-type">{c.score.typeName}</h2>
             <span className={`verdict-badge verdict-${c.score.verdict}`} style={{ marginTop: 0 }}>
               {VERDICT_LABEL[c.score.verdict as Verdict] ?? c.score.verdict}
             </span>
@@ -69,32 +69,34 @@ export default async function CandidateDetailPage({
               <span className="verdict-badge verdict-ng">絶対 NG 該当</span>
             )}
           </div>
-          {axisNet.map((net, i) => {
-            const tier = tiers[i];
-            const pct = Math.max(5, Math.min(95, Math.round(((net + 20) / 40) * 100)));
-            const fillLeft = net >= 0 ? 50 : pct;
-            const fillWidth = Math.abs(pct - 50);
-            return (
-              <div className={`axis-row ${tier.tier}`} key={i}>
-                <div className="axis-meta">
-                  <span>{AXIS_NAMES[i]}</span>
-                  <span className="axis-net">{(net > 0 ? "+" : "") + net}（{tier.label}）</span>
+          <div className="admin-axes-grid">
+            {axisNet.map((net, i) => {
+              const tier = tiers[i];
+              const pct = Math.max(5, Math.min(95, Math.round(((net + 20) / 40) * 100)));
+              const fillLeft = net >= 0 ? 50 : pct;
+              const fillWidth = Math.abs(pct - 50);
+              return (
+                <div className={`axis-row ${tier.tier}`} key={i}>
+                  <div className="axis-meta">
+                    <span>{AXIS_NAMES[i]}</span>
+                    <span className="axis-net">{(net > 0 ? "+" : "") + net}（{tier.label}）</span>
+                  </div>
+                  <div className="axis-bar-track">
+                    <div className="axis-bar-fill" style={{ left: `${fillLeft}%`, width: `${fillWidth}%` }} />
+                  </div>
+                  <div className="axis-poles">
+                    <span>{AXIS_LABELS[i][0]}</span>
+                    <span>{AXIS_LABELS[i][1]}</span>
+                  </div>
                 </div>
-                <div className="axis-bar-track">
-                  <div className="axis-bar-fill" style={{ left: `${fillLeft}%`, width: `${fillWidth}%` }} />
-                </div>
-                <div className="axis-poles">
-                  <span>{AXIS_LABELS[i][0]}</span>
-                  <span>{AXIS_LABELS[i][1]}</span>
-                </div>
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
         </div>
       )}
 
       <section className="admin-card">
-        <h2 style={{ fontSize: "1.125rem", marginBottom: 12 }}>Part 1 回答（ipsative）</h2>
+        <h2 className="admin-section-title">Part 1 回答（ipsative）</h2>
         <table className="admin-table">
           <thead>
             <tr>

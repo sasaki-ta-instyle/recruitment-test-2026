@@ -32,10 +32,10 @@ export default async function AdminPage() {
 
   return (
     <main className="wide-shell">
-      <header style={{ marginBottom: 24 }}>
+      <header className="admin-detail-header">
         <span className="eyebrow">INSTYLE GROUP</span>
-        <h1 style={{ fontSize: "1.5rem", marginTop: 8 }}>受験者ダッシュボード</h1>
-        <p style={{ fontSize: "0.875rem", color: "var(--color-text-muted)", marginTop: 8 }}>
+        <h1 className="admin-detail-name">受験者ダッシュボード</h1>
+        <p className="admin-detail-meta">
           直近 200 件の受験者を表示。氏名をクリックで詳細ページへ。
         </p>
         <div className="admin-toolbar">
