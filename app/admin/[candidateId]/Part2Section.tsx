@@ -103,25 +103,27 @@ export function Part2Section({
     <section className="admin-card">
       <div className="part2-header">
         <h2 className="part2-title">Part 2 記述・採点</h2>
-        <div className="score-total" aria-live="polite">
-          <span className="score-total-label">合計</span>
-          <span className="score-total-value">
-            {total}
-            <span className="score-total-max"> / {MAX_TOTAL}</span>
-          </span>
-          <span className="score-total-meta">
-            採点済 {answeredCount} / {questions.length}
-          </span>
-        </div>
-        <div className="part2-ai-summary">
-          <span className="score-total-label">AI 合計</span>
-          <span className="score-total-value">
-            {aiTotal}
-            <span className="score-total-max"> / {MAX_TOTAL}</span>
-          </span>
-          <span className="score-total-meta">
-            AI 採点済 {aiScoredCount} / {questions.length}
-          </span>
+        <div className="part2-totals-group">
+          <div className="score-total" aria-live="polite">
+            <span className="score-total-label">合計</span>
+            <span className="score-total-value">
+              {total}
+              <span className="score-total-max"> / {MAX_TOTAL}</span>
+            </span>
+            <span className="score-total-meta">
+              採点済 {answeredCount} / {questions.length}
+            </span>
+          </div>
+          <div className="part2-ai-summary">
+            <span className="score-total-label">AI 合計</span>
+            <span className="score-total-value">
+              {aiTotal}
+              <span className="score-total-max"> / {MAX_TOTAL}</span>
+            </span>
+            <span className="score-total-meta">
+              AI 採点済 {aiScoredCount} / {questions.length}
+            </span>
+          </div>
         </div>
         <button
           type="button"

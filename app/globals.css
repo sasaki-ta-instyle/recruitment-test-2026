@@ -1119,6 +1119,12 @@ button:focus-visible { outline: 2px solid var(--color-info); outline-offset: 2px
   letter-spacing: 0.04em;
 }
 /* ── Part 2 AI 採点 UI ───────────────────────────────── */
+.part2-totals-group {
+  display: flex;
+  gap: 10px;
+  align-items: flex-end;
+  flex-wrap: wrap;
+}
 .part2-ai-summary {
   display: flex;
   align-items: baseline;
