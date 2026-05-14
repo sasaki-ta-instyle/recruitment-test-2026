@@ -1,0 +1,67 @@
+// Prisma schema for recruitment-test-2026
+// Stores Part1 (ipsative) answers and Part2 (essay) answers + computed scores.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Candidate {
+  id            String        @id @default(cuid())
+  name          String
+  submittedAt   DateTime      @default(now())
+  elapsedSec    Int           @default(0)
+  part1Answers  Part1Answer[]
+  part2Answers  Part2Answer[]
+  score         Score?
+
+  @@index([submittedAt])
+}
+
+model Part1Answer {
+  id              String    @id @default(cuid())
+  candidate       Candidate @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+  candidateId     String
+  questionIndex   Int
+  // ABCD 位置に並んだシャッフル後の極ラベル（例：["自責","他責","素直","素直じゃない"]）
+  shuffledPoles   String[]
+  closestLetter   String?
+  farthestLetter  String?
+  // 確定スコアに反映された極（時間切れの場合 null）
+  closestPole     String?
+  farthestPole    String?
+
+  @@unique([candidateId, questionIndex])
+}
+
+model Part2Answer {
+  id            String    @id @default(cuid())
+  candidate     Candidate @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+  candidateId   String
+  questionId    String
+  bodyText      String
+  charCount     Int       @default(0)
+  elapsedSec    Int       @default(0)
+
+  @@unique([candidateId, questionId])
+}
+
+model Score {
+  id             String    @id @default(cuid())
+  candidate      Candidate @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+  candidateId    String    @unique
+  // 4 軸ネット（-20 〜 +20）：自他 / 素直 / 貢献 / ポジネガ
+  axisSelf       Int
+  axisSunao      Int
+  axisContrib    Int
+  axisPositive   Int
+  bitKey         String    // "1110" など
+  typeName       String
+  verdict        String    // good-deep / good / develop / review / warn / ng
+  matchStrength  String    // strong / clear / mid / weak / hold
+  absoluteNg     Boolean   @default(false)
+}
