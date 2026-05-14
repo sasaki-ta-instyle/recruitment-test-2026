@@ -741,7 +741,15 @@ button:focus-visible { outline: 2px solid var(--color-info); outline-offset: 2px
 }
 
 @media print {
-  body { background: #FFFFFF; color: #000; font-size: 11px; line-height: 1.55; }
+  body {
+    background: #FFFFFF;
+    color: #000;
+    font-size: 11px;
+    line-height: 1.55;
+    /* 通常時の overflow-wrap: anywhere は印刷時に表セルで mid-char 改行を
+       引き起こすため、break-word に戻す（単語境界で折り返す） */
+    overflow-wrap: break-word;
+  }
   .no-print { display: none !important; }
 
   /* interviewer-guide */
@@ -781,21 +789,38 @@ button:focus-visible { outline: 2px solid var(--color-info); outline-offset: 2px
   .axis-meta { font-size: 10px; }
   .axis-poles { font-size: 9px; }
 
-  /* Part 1 テーブル：A4 に収まる文字サイズ */
+  /* Part 1 テーブル：A4 に収まる文字サイズ + 固定レイアウトで列幅を制御 */
   .admin-table {
     font-size: 10px;
     page-break-inside: auto;
     border-collapse: collapse;
+    table-layout: fixed;
+    width: 100%;
   }
-  .admin-table th, .admin-table td { padding: 4px 6px !important; line-height: 1.45; }
+  .admin-table th, .admin-table td {
+    padding: 5px 6px !important;
+    line-height: 1.55;
+    vertical-align: top;
+    overflow-wrap: break-word;        /* anywhere（mid-char）を抑制 */
+    word-break: normal;
+  }
+  /* 6 列：# / 軸 / 設問 / 最も近い / 最も遠い / コメント */
+  .admin-table th:nth-child(1), .admin-table td:nth-child(1) { width: 36px; white-space: nowrap; }
+  .admin-table th:nth-child(2), .admin-table td:nth-child(2) { width: 78px; }
+  .admin-table th:nth-child(3), .admin-table td:nth-child(3) { width: auto; }
+  .admin-table th:nth-child(4), .admin-table td:nth-child(4) { width: 118px; }
+  .admin-table th:nth-child(5), .admin-table td:nth-child(5) { width: 118px; }
+  .admin-table th:nth-child(6), .admin-table td:nth-child(6) { width: 100px; }
   .admin-table tbody tr td { background: transparent !important; }
   .admin-table tbody tr:nth-child(even) td { background: rgba(0,0,0,0.04) !important; }
   .admin-table thead { background: rgba(0,0,0,0.08) !important; }
   .admin-table tr { page-break-inside: avoid; page-break-after: auto; }
-  .answer-cell { gap: 6px; min-width: 0; }
-  .opt-letter { min-width: 18px; height: 18px; font-size: 10px; padding: 0 4px; }
-  .opt-pole { font-size: 9px; }
-  .opt-text { font-size: 9px; }
+  /* answer-cell は内側 div なので display: flex を維持しつつ折り返し */
+  .answer-cell { gap: 6px; min-width: 0; flex-wrap: nowrap; }
+  .opt-letter { min-width: 16px; height: 16px; font-size: 9px; padding: 0 4px; flex-shrink: 0; }
+  .opt-body { min-width: 0; }
+  .opt-pole { font-size: 9px; word-break: keep-all; }
+  .opt-text { font-size: 9px; line-height: 1.5; overflow-wrap: break-word; }
 
   /* Part 2 採点：選択中のみ表示（縁取りバッジ）。それ以外は非表示。 */
   .part2-header { margin-bottom: 8px; flex-wrap: nowrap; }
