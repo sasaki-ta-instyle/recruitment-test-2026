@@ -487,7 +487,6 @@ export default function TestPage() {
           </div>
           <div className="ips-table">
             <div className="ips-row ips-header">
-              <span className="ips-letter" />
               <span className="ips-text" />
               <span className="ips-pick-h">最も近い</span>
               <span className="ips-pick-h">最も遠い</span>
@@ -501,7 +500,6 @@ export default function TestPage() {
               if (p1Locked[p1Idx]) cls.push("locked");
               return (
                 <div className={cls.join(" ")} key={o.letter}>
-                  <span className="ips-letter">{o.letter}</span>
                   <span className="ips-text">{o.text}</span>
                   <button
                     className="ips-pick ips-close"

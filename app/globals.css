@@ -315,10 +315,10 @@ button:focus-visible { outline: 2px solid var(--color-info); outline-offset: 2px
 .ips-table { display: flex; flex-direction: column; gap: 8px; }
 .ips-row {
   display: grid;
-  grid-template-columns: 32px 1fr auto auto;
+  grid-template-columns: 1fr auto auto;
   gap: 12px;
   align-items: center;
-  padding: 12px 14px;
+  padding: 14px 16px;
   background: var(--color-bg);
   border-radius: var(--r-sm);
   transition: background var(--t-fast);
@@ -1049,31 +1049,23 @@ button:focus-visible { outline: 2px solid var(--color-info); outline-offset: 2px
   .quiz-body { padding: 18px 16px; border-radius: var(--r-sm); }
   .q-text { font-size: 0.9375rem; margin-bottom: 16px; }
 
-  /* Part 1 ipsative — モバイル 3 段組（letter / text / 2 ボタン）*/
+  /* Part 1 ipsative — モバイル 2 段組（text 上 / 2 ボタン 下）*/
   .ips-row {
     grid-template-columns: 1fr 1fr;
-    grid-template-rows: auto auto auto;
+    grid-template-rows: auto auto;
     column-gap: 10px;
-    row-gap: 10px;
+    row-gap: 12px;
     padding: 14px 14px 12px;
   }
   .ips-row.ips-header { display: none; }
-  .ips-row > .ips-letter {
-    grid-row: 1;
-    grid-column: 1 / span 2;
-    text-align: left;
-    font-size: 0.6875rem;
-    color: var(--color-text-muted);
-    letter-spacing: 0.12em;
-  }
   .ips-row > .ips-text {
-    grid-row: 2;
+    grid-row: 1;
     grid-column: 1 / span 2;
     font-size: 0.9375rem;
     line-height: 1.65;
   }
   .ips-row > .ips-pick {
-    grid-row: 3;
+    grid-row: 2;
     width: 100%;
     min-height: 44px;
     padding: 12px 0;

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
-import { PART1, PART2 } from "@/lib/questions";
+import { PART1, PART2, type Part1Question } from "@/lib/questions";
 import {
   AXIS_LABELS,
   AXIS_NAMES,
@@ -19,6 +19,34 @@ function fmtElapsed(sec: number): string {
   const m = String(Math.floor(sec / 60)).padStart(2, "0");
   const s = String(sec % 60).padStart(2, "0");
   return `${m}:${s}`;
+}
+
+// PART1[i].options の定義順 = 固定 A/B/C/D。
+// 受験者が見た shuffledPoles の letter ではなく、pole から逆引きして
+// 「リファレンス上の固定 letter」を返す。
+function fixedLetterByPole(q: Part1Question, pole: string | null): string | null {
+  if (!pole) return null;
+  const idx = q.options.findIndex((o) => o.pole === pole);
+  return idx >= 0 ? String.fromCharCode(65 + idx) : null;
+}
+
+// time-out 等で pole が null だが letter（受験者が見た位置）と
+// shuffledPoles が残っているケースのフォールバック。
+function fixedLetterByShuffled(
+  q: Part1Question,
+  shuffledPolesJson: string,
+  shuffledLetter: string | null,
+): string | null {
+  if (!shuffledLetter) return null;
+  let arr: string[] = [];
+  try {
+    arr = JSON.parse(shuffledPolesJson) as string[];
+  } catch {
+    return null;
+  }
+  const idx = shuffledLetter.charCodeAt(0) - 65;
+  const pole = arr[idx];
+  return pole ? fixedLetterByPole(q, pole) : null;
 }
 
 export default async function CandidateDetailPage({
@@ -110,6 +138,16 @@ export default async function CandidateDetailPage({
           <tbody>
             {PART1.map((q, i) => {
               const a = c.part1Answers.find((p) => p.questionIndex === i);
+              const closeFixedLetter = a?.closestPole
+                ? fixedLetterByPole(q, a.closestPole)
+                : a
+                  ? fixedLetterByShuffled(q, a.shuffledPoles, a.closestLetter ?? null)
+                  : null;
+              const farFixedLetter = a?.farthestPole
+                ? fixedLetterByPole(q, a.farthestPole)
+                : a
+                  ? fixedLetterByShuffled(q, a.shuffledPoles, a.farthestLetter ?? null)
+                  : null;
               const closeText = a?.closestPole
                 ? q.options.find((o) => o.pole === a.closestPole)?.text ?? null
                 : null;
@@ -122,8 +160,8 @@ export default async function CandidateDetailPage({
                   <td style={{ fontSize: "0.75rem", color: "var(--color-text-muted)" }}>{q.axes}</td>
                   <td style={{ fontSize: "0.8125rem", lineHeight: 1.6 }}>{q.text}</td>
                   <td className={`answer-cell ${a?.closestPole ? "is-close" : ""}`}>
-                    {a?.closestLetter ? (
-                      <span className="opt-letter opt-letter-close">{a.closestLetter}</span>
+                    {closeFixedLetter ? (
+                      <span className="opt-letter opt-letter-close">{closeFixedLetter}</span>
                     ) : (
                       <span className="opt-letter opt-letter-empty">—</span>
                     )}
@@ -135,8 +173,8 @@ export default async function CandidateDetailPage({
                     </div>
                   </td>
                   <td className={`answer-cell ${a?.farthestPole ? "is-far" : ""}`}>
-                    {a?.farthestLetter ? (
-                      <span className="opt-letter opt-letter-far">{a.farthestLetter}</span>
+                    {farFixedLetter ? (
+                      <span className="opt-letter opt-letter-far">{farFixedLetter}</span>
                     ) : (
                       <span className="opt-letter opt-letter-empty">—</span>
                     )}
