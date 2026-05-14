@@ -27,7 +27,7 @@ function ClosedLanding({
     <main className="app-shell">
       <div className="landing">
         <Logo className="landing-logo" height={16} />
-        <h1 className="landing-title">採用カルチャーテスト 2026</h1>
+        <h1 className="landing-title">採用カルチャーテスト</h1>
         <p className="landing-sub">{message[status]}</p>
         {!fromToken && (
           <div className="landing-cta">

@@ -569,7 +569,7 @@ export default function TestApp({
       <main className="app-shell">
         <div className="landing">
           <Logo className="landing-logo" height={16} />
-          <h1 className="landing-title">採用カルチャーテスト 2026</h1>
+          <h1 className="landing-title">採用カルチャーテスト</h1>
           <p className="landing-sub">
             Part 1（選択 20 問）と Part 2（記述 10 問）の 2 部構成、合計 60 分です。
             Part 1 は各問 45 秒。Part 2 は時間配分自由。

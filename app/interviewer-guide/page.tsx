@@ -3,7 +3,7 @@ import { TYPE_MAP, VERDICT_LABEL } from "@/lib/scoring";
 import { Logo } from "@/app/_components/Logo";
 
 export const metadata = {
-  title: "面接官ガイド | INSTYLE GROUP 採用カルチャーテスト 2026",
+  title: "面接官ガイド | INSTYLE GROUP 採用カルチャーテスト",
   robots: { index: false, follow: false },
 };
 
@@ -22,7 +22,7 @@ export default function InterviewerGuidePage() {
       </div>
       <header style={{ marginBottom: 24 }}>
         <Logo height={14} />
-        <h1 style={{ fontSize: "1.625rem", marginTop: 8 }}>採用カルチャーテスト 2026 面接官ガイド</h1>
+        <h1 style={{ fontSize: "1.625rem", marginTop: 8 }}>採用カルチャーテスト 面接官ガイド</h1>
         <p style={{ fontSize: "0.9375rem", color: "var(--color-text-muted)", marginTop: 8, lineHeight: 1.8 }}>
           v6（イプサティブ評価 4 選択肢 × 4 軸 × 16 タイプ）。Part 1 は性格傾向の自動判定、Part 2 は INSTYLE 思想との接続度の人手採点。
         </p>

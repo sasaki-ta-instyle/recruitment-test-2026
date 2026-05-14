@@ -73,7 +73,7 @@ export default function AdminReferencePage() {
       <header style={{ marginBottom: 24 }}>
         <span className="eyebrow">採点リファレンス</span>
         <h1 style={{ fontSize: "1.5rem", marginTop: 6 }}>
-          INSTYLE GROUP カルチャーテスト 2026 — 採点リファレンス
+          INSTYLE GROUP カルチャーテスト — 採点リファレンス
         </h1>
         <p className="ref-lead">
           Part 1（イプサティブ評価）の設問と各選択肢の傾向、4 軸ネット→16 タイプ判定、マッチ強度、Part 2（記述）の採点ルーブリックをまとめたリファレンスです。
