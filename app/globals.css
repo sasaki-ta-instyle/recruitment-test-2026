@@ -1279,6 +1279,42 @@ button:focus-visible { outline: 2px solid var(--color-info); outline-offset: 2px
 }
 .admin-link:hover { background: var(--color-text); color: var(--color-text-inverse); }
 .admin-link:focus-visible { outline: 2px solid var(--color-info); outline-offset: 2px; }
+.admin-link-disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  background: var(--color-surface);
+  color: var(--color-text);
+}
+
+.admin-pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-top: 24px;
+  flex-wrap: wrap;
+}
+.admin-pagination-meta {
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  letter-spacing: 0.04em;
+  font-variant-numeric: tabular-nums;
+}
+.admin-pagination-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.admin-pagination-current {
+  font-family: var(--font-display);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: var(--color-text);
+  font-variant-numeric: tabular-nums;
+  min-width: 60px;
+  text-align: center;
+}
 .admin-detail-nav {
   display: flex;
   justify-content: space-between;
