@@ -63,7 +63,7 @@ export default async function AdminPage({
         </p>
         <div className="admin-toolbar">
           <Link className="admin-link" href="/admin/invites">受験 URL 発行</Link>
-          <Link className="admin-link" href="/admin/settings">受験設定（全体）</Link>
+          <Link className="admin-link" href="/admin/settings">受験時間の管理</Link>
           <Link className="admin-link" href="/admin/reference">採点リファレンス</Link>
           <Link className="admin-link" href="/interviewer-guide">面接官ガイド</Link>
           <CsvDownloadButton count={candidates.length} />
