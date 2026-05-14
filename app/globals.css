@@ -196,6 +196,24 @@ button:focus-visible { outline: 2px solid var(--color-info); outline-offset: 2px
 .btn-secondary:hover:not(:disabled) { background: var(--color-surface-2); }
 .btn-secondary:disabled { opacity: 0.4; cursor: not-allowed; }
 
+.btn-danger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  background: var(--color-error);
+  color: var(--color-text-inverse);
+  border: none;
+  border-radius: var(--r-btn);
+  padding: 10px 20px;
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: opacity var(--t-fast);
+}
+.btn-danger:hover:not(:disabled) { opacity: 0.85; }
+.btn-danger:disabled { opacity: 0.4; cursor: not-allowed; }
+
 /* ── Landing（intro） ─────────────────────────────────── */
 .landing {
   text-align: center;
@@ -703,8 +721,10 @@ button:focus-visible { outline: 2px solid var(--color-info); outline-offset: 2px
 }
 
 @media print {
-  body { background: #FFFFFF; }
+  body { background: #FFFFFF; color: #000; font-size: 11px; line-height: 1.55; }
   .no-print { display: none !important; }
+
+  /* interviewer-guide */
   .guide-section {
     box-shadow: none;
     page-break-inside: avoid;
@@ -715,6 +735,110 @@ button:focus-visible { outline: 2px solid var(--color-info); outline-offset: 2px
   .guide-section h3 { page-break-after: avoid; }
   .guide-table { page-break-inside: auto; }
   .guide-table tr { page-break-inside: avoid; page-break-after: auto; }
+
+  /* admin candidate detail を A4 ポートレートで読める形へ */
+  .wide-shell { max-width: none; padding: 0 !important; }
+  .admin-detail-header { margin-bottom: 12px; }
+  .admin-detail-name { font-size: 18px; }
+  .admin-detail-meta { font-size: 10px; }
+
+  .admin-card {
+    background: transparent;
+    padding: 0 0 12px;
+    margin-bottom: 12px;
+    border-radius: 0;
+    box-shadow: none;
+    page-break-inside: avoid;
+  }
+  .admin-card + .admin-card { border-top: 1px solid #ccc; padding-top: 12px; }
+  .admin-section-title { font-size: 13px; page-break-after: avoid; }
+  .admin-summary-type { font-size: 14px; }
+
+  /* iPad 用 2 カラム → 印刷時は 1 カラム */
+  .admin-axes-grid { grid-template-columns: 1fr !important; gap: 8px 0 !important; }
+  .axis-row { padding: 6px 0; }
+  .axis-row + .axis-row { border-top: 1px solid #eee; }
+  .axis-meta { font-size: 10px; }
+  .axis-poles { font-size: 9px; }
+
+  /* Part 1 テーブル：A4 に収まる文字サイズ */
+  .admin-table {
+    font-size: 10px;
+    page-break-inside: auto;
+    border-collapse: collapse;
+  }
+  .admin-table th, .admin-table td { padding: 4px 6px !important; line-height: 1.45; }
+  .admin-table tbody tr td { background: transparent !important; }
+  .admin-table tbody tr:nth-child(even) td { background: rgba(0,0,0,0.04) !important; }
+  .admin-table thead { background: rgba(0,0,0,0.08) !important; }
+  .admin-table tr { page-break-inside: avoid; page-break-after: auto; }
+  .answer-cell { gap: 6px; min-width: 0; }
+  .opt-letter { min-width: 18px; height: 18px; font-size: 10px; padding: 0 4px; }
+  .opt-pole { font-size: 9px; }
+  .opt-text { font-size: 9px; }
+
+  /* Part 2 採点：選択中のみ表示（縁取りバッジ）。それ以外は非表示。 */
+  .part2-header { margin-bottom: 8px; flex-wrap: nowrap; }
+  .part2-title { font-size: 13px; }
+  .score-total {
+    background: transparent;
+    padding: 0;
+    gap: 6px;
+  }
+  .score-total-value { font-size: 14px; }
+  .score-total-max { font-size: 10px; }
+  .score-total-meta { font-size: 9px; }
+  .part2-row {
+    page-break-inside: avoid;
+    display: block !important;
+    padding: 8px 0 10px !important;
+    margin-bottom: 0 !important;
+  }
+  .part2-row + .part2-row { border-top: 1px solid #eee; }
+  .part2-row-head { margin-bottom: 4px; }
+  .part2-meta { font-size: 9px; }
+  .part2-question { font-size: 11px; margin-bottom: 4px; }
+  .part2-body {
+    font-size: 10px;
+    line-height: 1.6;
+    background: rgba(0,0,0,0.04) !important;
+    padding: 6px 8px !important;
+    margin-bottom: 6px !important;
+    page-break-inside: auto;
+  }
+  .score-picker {
+    grid-row: auto !important;
+    grid-column: auto !important;
+    flex-direction: row !important;
+    gap: 6px !important;
+    padding-top: 0 !important;
+  }
+  .score-picker .score-button { display: none; }
+  .score-picker .score-button.is-selected {
+    display: inline-flex;
+    min-width: 0;
+    min-height: 0;
+    padding: 2px 8px !important;
+    background: transparent !important;
+    color: #000 !important;
+    border: 1px solid #000;
+    border-radius: 4px;
+    font-size: 11px;
+  }
+  .score-picker-state {
+    margin-left: 0 !important;
+    color: #000;
+    font-size: 9px;
+  }
+
+  /* badges */
+  .verdict-badge {
+    box-shadow: none;
+    border: 1px solid currentColor;
+    padding: 2px 8px;
+    font-size: 9px;
+  }
+  .match-pill { font-size: 9px; padding: 2px 8px; }
 }
 
 /* ── Admin: 詳細ヘッダー / サマリ ────────────────────── */
@@ -977,9 +1101,98 @@ button:focus-visible { outline: 2px solid var(--color-info); outline-offset: 2px
 .admin-detail-nav {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   gap: 12px;
   font-size: 0.875rem;
+  flex-wrap: wrap;
 }
+.admin-detail-nav-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.admin-detail-nav-actions .admin-link {
+  cursor: pointer;
+  border: none;
+  font: inherit;
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+/* ── Admin: タブ／一括操作バー ─────────────────────── */
+.admin-tabs {
+  display: flex;
+  gap: 4px;
+  margin: 16px 0;
+  border-bottom: 1px solid var(--color-surface-2);
+}
+.admin-tab {
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 16px;
+  font-family: var(--font-display);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  text-decoration: none;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  transition: color var(--t-fast), border-color var(--t-fast);
+}
+.admin-tab:hover { color: var(--color-text); }
+.admin-tab.is-active {
+  color: var(--color-text);
+  border-bottom-color: var(--color-text);
+}
+
+.admin-bulkbar {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  background: var(--color-text);
+  color: var(--color-text-inverse);
+  padding: 12px 20px;
+  border-radius: var(--r-sm);
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+.admin-bulkbar-count {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.875rem;
+}
+.admin-bulkbar-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.admin-bulkbar-actions .btn-secondary {
+  background: var(--color-text-inverse);
+  color: var(--color-text);
+}
+.admin-bulkbar-actions .btn-secondary:hover:not(:disabled) {
+  background: var(--color-surface);
+}
+.admin-bulkbar-error {
+  background: var(--color-error);
+  color: var(--color-text-inverse);
+  padding: 10px 14px;
+  border-radius: var(--r-sm);
+  font-size: 0.8125rem;
+  margin-bottom: 12px;
+}
+
+.admin-checkbox-cell { width: 36px; padding-right: 0 !important; }
+.admin-checkbox-cell input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  cursor: pointer;
+  accent-color: var(--color-text);
+}
+.admin-table tbody tr.is-selected td { background: rgba(56, 83, 123, 0.08); }
 
 /* ── Reference page ───────────────────────────────────── */
 .ref-lead {

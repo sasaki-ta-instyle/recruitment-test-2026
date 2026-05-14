@@ -15,11 +15,14 @@ model Candidate {
   name          String
   submittedAt   DateTime      @default(now())
   elapsedSec    Int           @default(0)
+  // null=アクティブ。値があれば「アーカイブ済み」。削除は cascade で物理削除する。
+  archivedAt    DateTime?
   part1Answers  Part1Answer[]
   part2Answers  Part2Answer[]
   score         Score?
 
   @@index([submittedAt])
+  @@index([archivedAt])
 }
 
 model Part1Answer {

@@ -12,6 +12,7 @@ import {
   type Verdict,
 } from "@/lib/scoring";
 import { Part2Section } from "./Part2Section";
+import { PrintButton } from "./PrintButton";
 
 export const dynamic = "force-dynamic";
 
@@ -72,10 +73,13 @@ export default async function CandidateDetailPage({
 
   return (
     <main className="wide-shell">
-      <p className="no-print admin-detail-nav" style={{ marginBottom: 12 }}>
+      <div className="no-print admin-detail-nav" style={{ marginBottom: 12 }}>
         <Link href="/admin">← 一覧に戻る</Link>
-        <Link href="/admin/reference">採点リファレンスを開く →</Link>
-      </p>
+        <div className="admin-detail-nav-actions">
+          <PrintButton />
+          <Link className="admin-link" href="/admin/reference">採点リファレンス →</Link>
+        </div>
+      </div>
 
       <header className="admin-detail-header">
         <span className="eyebrow">受験者詳細</span>
