@@ -56,7 +56,7 @@ export default function AdminReferencePage() {
       </header>
 
       <section className="admin-card">
-        <h2 className="ref-h2">Part 1 設問と極（v6 イプサティブ評価）</h2>
+        <h2 className="ref-h2">Part 1 設問と極</h2>
         <p className="ref-desc">
           各設問は 4 つの選択肢（A〜D）から「最も近い」を +1、「最も遠い」を −1 とするイプサティブ評価形式。
           各選択肢は 8 つの極のいずれかに割り当てられている。
