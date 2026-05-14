@@ -56,7 +56,7 @@ export default function AdminReferencePage() {
       </header>
 
       <section className="admin-card">
-        <h2 className="ref-h2">Part 1 設問と極</h2>
+        <h2 className="ref-h2">Part 1 設問</h2>
         <p className="ref-desc">
           各設問は 4 つの選択肢（A〜D）から「最も近い」を +1、「最も遠い」を −1 とするイプサティブ評価形式。
           各選択肢は 8 つの極のいずれかに割り当てられている。
@@ -67,10 +67,10 @@ export default function AdminReferencePage() {
               <th style={{ width: 56 }}>#</th>
               <th style={{ width: 140 }}>軸</th>
               <th>設問</th>
-              <th>A（極）</th>
-              <th>B（極）</th>
-              <th>C（極）</th>
-              <th>D（極）</th>
+              <th>A</th>
+              <th>B</th>
+              <th>C</th>
+              <th>D</th>
             </tr>
           </thead>
           <tbody>
@@ -227,6 +227,63 @@ export default function AdminReferencePage() {
             ))}
           </tbody>
         </table>
+      </section>
+
+      <section className="admin-card" id="section-time">
+        <h2 className="ref-h2">Part 2 回答量・時間配分の読み方</h2>
+        <p className="ref-desc">
+          Part 2 は 50 分で 10 問すべて書ききれない想定で組まれています。文字数の指定もありません。
+          どの問にどれだけ時間を割いたか、どの問が短文か／空欄か、その出力配分そのものが
+          「優先順位の出方」「思考の癖」を映します。
+        </p>
+
+        <h3 className="ref-h3">読み方のフレーム</h3>
+        <ul className="ref-steps" style={{ paddingLeft: 22 }}>
+          <li>
+            <strong>濃淡が極端な人：</strong>1〜2 問だけに長文を書き、残りはほぼ空欄。
+            → 興味と無関心の差が大きい人。価値観の優先順位が明快なタイプ。
+          </li>
+          <li>
+            <strong>均等に薄い人：</strong>全問とも同じくらいの長さで表面的。
+            → 「全部答えなければ」というプレッシャー優先。深掘りを避ける癖がある可能性。
+          </li>
+          <li>
+            <strong>前半に厚く、後半が崩れる人：</strong>時間配分が下手だが、最初の問題には誠実に向き合っている。改善で伸びる可能性。
+          </li>
+          <li>
+            <strong>後半に時間を残し、最後の Q10 まで丁寧な人：</strong>全体を見て配分できる人。ペース感覚と俯瞰力がある。
+          </li>
+          <li>
+            <strong>長く書いているが薄い人：</strong>表面の言葉が多く、自分の経験や具体例に降りていない。建前・AI・テンプレを疑う。
+          </li>
+          <li>
+            <strong>短くても刺さる人：</strong>1 段落で本質を捉える人。これは高評価。文字量と評価点は別。
+          </li>
+        </ul>
+
+        <h3 className="ref-h3">赤信号パターン</h3>
+        <ul className="ref-steps" style={{ paddingLeft: 22 }}>
+          <li>
+            <strong>c1〜c5（オープンコミュニケーション系）まで時間を使い、c3・c9・c10 がほぼ空欄。</strong>
+            → 表面的に企業文化に寄せる作業を優先しており、「自分ごと」（貢献・5 年後）を後回しにする傾向。
+          </li>
+          <li>
+            <strong>c3（貢献）が極端に短い／空欄。</strong>→ 貢献軸の自覚が薄い決定打になり得る。
+          </li>
+          <li>
+            <strong>c7（読書）が短く、c10（5 年後）も短い。</strong>→ 学習・成長への投資意識が低い可能性。
+          </li>
+          <li>
+            <strong>c4（違和感）の文字数が他と比べて極端に短い。</strong>→ 違和感を言語化できない＝自己認識が浅い。
+          </li>
+        </ul>
+
+        <h3 className="ref-h3">採点シートへの記録</h3>
+        <p className="ref-desc">
+          受験者詳細の「面接官メモ」や設問ごとのコメント欄に、各設問の点数に加えて
+          <strong>所要時間と文字数の所感</strong>を 1 行ずつ書き残すと、2 次面接の話題の起点になります。
+          例：「c3 が 30 秒・空欄」「c10 に 12 分かけて 800 字」のような事実を残す。
+        </p>
       </section>
     </main>
   );
