@@ -69,7 +69,7 @@ export async function POST(req: Request) {
         part1Answers: {
           create: (body.part1 ?? []).map((a) => ({
             questionIndex: a.questionIndex,
-            shuffledPoles: (a.shuffledPoles ?? []).slice(0, 4),
+            shuffledPoles: JSON.stringify((a.shuffledPoles ?? []).slice(0, 4)),
             closestLetter: a.closestLetter ?? null,
             farthestLetter: a.farthestLetter ?? null,
             closestPole: a.closestPole ?? null,

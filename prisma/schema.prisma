@@ -6,7 +6,7 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "sqlite"
   url      = env("DATABASE_URL")
 }
 
@@ -27,8 +27,9 @@ model Part1Answer {
   candidate       Candidate @relation(fields: [candidateId], references: [id], onDelete: Cascade)
   candidateId     String
   questionIndex   Int
-  // ABCD 位置に並んだシャッフル後の極ラベル（例：["自責","他責","素直","素直じゃない"]）
-  shuffledPoles   String[]
+  // SQLite はスカラ配列をサポートしないため JSON 文字列で保存する。
+  // 中身は ABCD 位置に並んだシャッフル後の極ラベル（例：["自責","他責","素直","素直じゃない"]）。
+  shuffledPoles   String
   closestLetter   String?
   farthestLetter  String?
   // 確定スコアに反映された極（時間切れの場合 null）

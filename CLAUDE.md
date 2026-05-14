@@ -74,18 +74,19 @@ pnpm dev
 ### 初回 ConoHa セットアップ（このアプリ用）
 
 ```bash
-# 1. アプリディレクトリ
+# 1. アプリディレクトリ（shared/ に SQLite ファイルを永続化）
 ssh conoha-deploy 'mkdir -p /var/www/app/recruitment-test-2026/{releases,shared} \
   && touch /var/www/_shared/apps/app-recruitment-test-2026.env \
   && chmod 600 /var/www/_shared/apps/app-recruitment-test-2026.env'
 
-# 2. 共有 env に DATABASE_URL / BASIC_AUTH_PASS を追記（USER は不要）
+# 2. 共有 env に DATABASE_URL / BASIC_AUTH_PASS を追記
+#    DATABASE_URL=file:/var/www/app/recruitment-test-2026/shared/db.sqlite
+#    BASIC_AUTH_PASS=<single-password>
 ssh conoha-deploy 'vi /var/www/_shared/apps/app-recruitment-test-2026.env'
 
-# 3. PostgreSQL DB 作成（ConoHa 上）
-ssh conoha-root 'sudo -u postgres psql -c "CREATE DATABASE recruitment_test_2026;" \
-  && sudo -u postgres psql -c "CREATE USER recruitment_test_user WITH ENCRYPTED PASSWORD '\''<gen-pw>'\'';" \
-  && sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE recruitment_test_2026 TO recruitment_test_user;"'
+# 3. SQLite ファイル領域を用意（初回 deploy 時の prisma migrate deploy が中身を作る）
+ssh conoha-deploy 'touch /var/www/app/recruitment-test-2026/shared/db.sqlite \
+  && chmod 660 /var/www/app/recruitment-test-2026/shared/db.sqlite'
 
 # 4. Nginx location（exact + ^~ prefix の 2 段で trailing-slash 308 ループ回避）
 ssh conoha-root 'cat > /etc/nginx/conf.d/proxy-apps/app/recruitment-test-2026.conf <<"EOF"

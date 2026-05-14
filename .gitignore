@@ -41,5 +41,7 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# prisma
+# prisma — local SQLite dev DB（本番は ConoHa の /var/www/app/recruitment-test-2026/shared/db.sqlite を絶対パス指定）
+prisma/dev.db
+prisma/dev.db-journal
 prisma/migrations/dev.db*

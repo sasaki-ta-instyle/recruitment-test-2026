@@ -50,10 +50,11 @@ cd ~/Workspace/recruitment-test-2026
 ### 2.3 ローカル開発に必要なツール
 
 ```bash
-brew install pnpm postgresql@16
-brew services start postgresql@16
+brew install pnpm
 pnpm install
 ```
+
+> SQLite は macOS 標準同梱なので追加インストール不要。
 
 ### 2.4 環境変数を配置
 
@@ -61,15 +62,14 @@ pnpm install
 
 ```bash
 cp .env.example .env.local
-# DATABASE_URL は postgresql://<user>:<pw>@localhost:5432/recruitment_test_2026?schema=public
+# DATABASE_URL="file:./prisma/dev.db"
 # BASIC_AUTH_PASS は 1Password から取得（共有メモ：「採用テスト面接官ログイン」）。ユーザー名は使わない単一パスワード運用。
 ```
 
 ### 2.5 DB を初期化
 
 ```bash
-createdb recruitment_test_2026
-pnpm prisma migrate dev --name init
+pnpm prisma migrate deploy   # 既存マイグレーションを SQLite に適用
 ```
 
 ### 2.6 起動
@@ -86,11 +86,11 @@ pnpm dev
 | 種類 | 場所 | 引き継ぎ方法 |
 |---|---|---|
 | ソースコード | GitHub `sasaki-ta-instyle/recruitment-test-2026` | `git clone` |
-| 本番 DB | ConoHa Postgres `recruitment_test_2026` | サーバ側永続。pg_dump でバックアップ |
+| 本番 DB | ConoHa SQLite `/var/www/app/recruitment-test-2026/shared/db.sqlite` | サーバ側永続。`scp` で吸い上げてバックアップ |
 | 本番 env | ConoHa `/var/www/_shared/apps/app-recruitment-test-2026.env` | サーバ側永続 |
 | 本番 Web プロセス | PM2 `app-recruitment-test-2026` | 触らない、`deploy-prod.yml` で更新 |
 | ローカル `.env.local` | 各 Mac のローカル | 1Password 経由 |
-| ローカル DB | 各 Mac のローカル Postgres | dev 用テストデータ、共有しない |
+| ローカル DB | `./prisma/dev.db`（SQLite ファイル） | dev 用テストデータ、共有しない |
 
 ---
 
@@ -123,11 +123,12 @@ pnpm migrate
 ssh conoha-deploy 'pm2 logs app-recruitment-test-2026 --nostream --lines 50 --raw'
 ```
 
-### 受験者データを pg_dump で吸い上げる
+### 受験者データを吸い上げる（SQLite ファイルをそのまま scp）
 
 ```bash
-ssh conoha-deploy 'pg_dump -h localhost -U recruitment_test_user -d recruitment_test_2026 > ~/dump-$(date +%F).sql'
-scp conoha-deploy:dump-*.sql ./
+scp conoha-deploy:/var/www/app/recruitment-test-2026/shared/db.sqlite ./backup-$(date +%F).sqlite
+# 中身を覗くだけなら sqlite3 で:
+# sqlite3 backup-YYYY-MM-DD.sqlite '.tables'
 ```
 
 ### ロールバック（手動）
