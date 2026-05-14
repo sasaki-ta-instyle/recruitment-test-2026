@@ -1187,6 +1187,7 @@ button:focus-visible { outline: 2px solid var(--color-info); outline-offset: 2px
   align-items: center;
   min-height: 36px;
   padding: 6px 16px;
+  border: none;                         /* <button class="admin-link"> の既定枠を除去 */
   border-radius: var(--r-pill);
   background: var(--color-surface);
   color: var(--color-text);
@@ -1195,7 +1196,12 @@ button:focus-visible { outline: 2px solid var(--color-info); outline-offset: 2px
   font-weight: 700;
   letter-spacing: 0.04em;
   text-decoration: none;
+  cursor: pointer;
   transition: background var(--t-fast), color var(--t-fast);
+}
+.admin-link:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 .admin-link:hover { background: var(--color-text); color: var(--color-text-inverse); }
 .admin-link:focus-visible { outline: 2px solid var(--color-info); outline-offset: 2px; }
