@@ -65,6 +65,7 @@ export default async function CandidateDetailPage({
       part1Answers: { orderBy: { questionIndex: "asc" } },
       part2Answers: true,
       questionNotes: true,
+      invite: { select: { id: true, serialNo: true, label: true } },
     },
   });
   if (!c) notFound();
@@ -90,7 +91,20 @@ export default async function CandidateDetailPage({
       </div>
 
       <header className="admin-detail-header">
-        <span className="eyebrow">受験者詳細</span>
+        <span className="eyebrow">
+          受験者詳細
+          {c.serialNo != null && (
+            <> ／ <strong style={{ fontFamily: "var(--font-display)" }}>受験 #{String(c.serialNo).padStart(3, "0")}</strong></>
+          )}
+          {c.invite && (
+            <>
+              {" ／ "}
+              <Link href="/admin/invites" style={{ color: "inherit" }}>
+                発行 URL #{c.invite.serialNo != null ? String(c.invite.serialNo).padStart(3, "0") : "—"}（{c.invite.label}）
+              </Link>
+            </>
+          )}
+        </span>
         <h1 className="admin-detail-name">{c.name}</h1>
         <p className="admin-detail-meta">
           提出 {new Date(c.submittedAt).toLocaleString("ja-JP")} ・ 所要 {fmtElapsed(c.elapsedSec)}

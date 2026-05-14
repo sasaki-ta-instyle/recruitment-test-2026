@@ -63,9 +63,13 @@ export async function POST(req: Request) {
   const verdict = judge(axisNet);
 
   try {
+    // 通し番号採番：max + 1
+    const maxRow = await prisma.candidate.aggregate({ _max: { serialNo: true } });
+    const nextSerial = (maxRow._max.serialNo ?? 0) + 1;
     const created = await prisma.candidate.create({
       data: {
         name,
+        serialNo: nextSerial,
         elapsedSec: Math.max(0, Math.trunc(body.elapsedSec ?? 0)),
         part1Answers: {
           create: (body.part1 ?? []).map((a) => ({

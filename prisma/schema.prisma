@@ -12,6 +12,9 @@ datasource db {
 
 model Candidate {
   id            String        @id @default(cuid())
+  // 受験者通し番号（提出時に max+1 で採番）。一覧で「#003」のように表示し、
+  // 発行 URL 一覧と組にして相互参照するための短い人間可読 ID。
+  serialNo      Int?          @unique
   name          String
   submittedAt   DateTime      @default(now())
   elapsedSec    Int           @default(0)
@@ -81,6 +84,9 @@ model QuestionNote {
 // 提出後に candidateId が紐づき、同じ URL は再利用不可になる。
 model TestInvite {
   id          String     @id @default(cuid())
+  // URL 発行通し番号（作成時に max+1 で採番）。Candidate.serialNo と分離した
+  // カウンタ。一覧で「#005」のように表示する。
+  serialNo    Int?       @unique
   token       String     @unique
   label       String     // 受験者識別用（氏名予定 / 案件名 etc.）
   openAt      DateTime?

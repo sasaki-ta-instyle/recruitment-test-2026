@@ -30,6 +30,7 @@ export default async function AdminPage({
 
   const rows: CandidateRow[] = candidates.map((c) => ({
     id: c.id,
+    serialNo: c.serialNo,
     name: c.name,
     submittedAt: c.submittedAt.toISOString(),
     elapsedSec: c.elapsedSec,

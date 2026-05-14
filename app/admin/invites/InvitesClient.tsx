@@ -7,12 +7,14 @@ import { createInvite, deleteInvite, regenerateInviteToken } from "./actions";
 
 export type InviteRow = {
   id: string;
+  serialNo: number | null;
   token: string;
   label: string;
   openAt: string | null;
   closeAt: string | null;
   message: string | null;
   candidateId: string | null;
+  candidateSerialNo: number | null;
   createdAt: string;
 };
 
@@ -169,6 +171,7 @@ export function InvitesClient({
           <table className="admin-table invites-table">
             <thead>
               <tr>
+                <th>#</th>
                 <th>ラベル</th>
                 <th>開始</th>
                 <th>終了</th>
@@ -183,12 +186,17 @@ export function InvitesClient({
                 const s = statusOf(r, nowMs);
                 return (
                   <tr key={r.id}>
+                    <td style={{ fontFamily: "var(--font-display)", fontWeight: 700, whiteSpace: "nowrap" }}>
+                      {r.serialNo != null ? `#${String(r.serialNo).padStart(3, "0")}` : "—"}
+                    </td>
                     <td>
                       <strong>{r.label}</strong>
                       {r.candidateId && (
                         <>
                           {" "}
-                          <Link href={`/admin/${r.candidateId}`}>詳細</Link>
+                          <Link href={`/admin/${r.candidateId}`}>
+                            詳細{r.candidateSerialNo != null ? `（受験 #${String(r.candidateSerialNo).padStart(3, "0")}）` : ""}
+                          </Link>
                         </>
                       )}
                     </td>

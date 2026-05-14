@@ -27,8 +27,11 @@ export async function createInvite(input: {
     const message = (input.message ?? "").slice(0, 1000) || null;
 
     const token = generateToken();
+    // 通し番号は max + 1 で採番（SQLite 単体運用なので race は無視）
+    const maxRow = await prisma.testInvite.aggregate({ _max: { serialNo: true } });
+    const nextSerial = (maxRow._max.serialNo ?? 0) + 1;
     const row = await prisma.testInvite.create({
-      data: { token, label, openAt, closeAt, message },
+      data: { token, label, openAt, closeAt, message, serialNo: nextSerial },
     });
     revalidatePath("/admin/invites");
     return { ok: true, id: row.id, token: row.token };

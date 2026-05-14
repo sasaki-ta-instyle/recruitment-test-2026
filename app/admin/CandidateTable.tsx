@@ -32,6 +32,7 @@ const MATCH_ORDER: Record<string, number> = {
 
 export type CandidateRow = {
   id: string;
+  serialNo: number | null;
   name: string;
   submittedAt: string;
   elapsedSec: number;
@@ -270,6 +271,7 @@ export function CandidateTable({
                     aria-label="全選択"
                   />
                 </th>
+                <th>#</th>
                 <th>
                   <button type="button" className="th-sort" onClick={() => toggleSort("submittedAt")}>
                     受験日時{arrow("submittedAt")}
@@ -320,6 +322,9 @@ export function CandidateTable({
                         onChange={() => toggle(c.id)}
                         aria-label={`${c.name} を選択`}
                       />
+                    </td>
+                    <td style={{ fontFamily: "var(--font-display)", fontWeight: 700, whiteSpace: "nowrap" }}>
+                      {c.serialNo != null ? `#${String(c.serialNo).padStart(3, "0")}` : "—"}
                     </td>
                     <td style={{ whiteSpace: "nowrap", fontSize: "0.8125rem", color: "var(--color-text-muted)" }}>
                       {fmtDate(c.submittedAt)}

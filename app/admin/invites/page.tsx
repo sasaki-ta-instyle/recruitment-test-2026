@@ -13,16 +13,19 @@ export default async function AdminInvitesPage() {
   const invites = await prisma.testInvite.findMany({
     orderBy: { createdAt: "desc" },
     take: 200,
+    include: { candidate: { select: { serialNo: true } } },
   });
 
   const rows: InviteRow[] = invites.map((i) => ({
     id: i.id,
+    serialNo: i.serialNo,
     token: i.token,
     label: i.label,
     openAt: i.openAt ? i.openAt.toISOString() : null,
     closeAt: i.closeAt ? i.closeAt.toISOString() : null,
     message: i.message,
     candidateId: i.candidateId,
+    candidateSerialNo: i.candidate?.serialNo ?? null,
     createdAt: i.createdAt.toISOString(),
   }));
 
