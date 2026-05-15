@@ -6,7 +6,7 @@ import { prisma } from "@/lib/prisma";
 import { PART2_DETAIL, type Part2Detail } from "@/lib/part2Rubric";
 
 const MODEL = "claude-sonnet-4-6";
-const ALLOWED_SCORES = new Set([0, 4, 7, 10]);
+const ALLOWED_SCORES = new Set([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
 
 type ScoringInput = {
   detail: Part2Detail;
@@ -23,16 +23,21 @@ function fmtSec(sec: number): string {
 
 function buildPrompt(input: ScoringInput): { system: string; user: string } {
   const { detail, body, charCount, elapsedSec } = input;
-  const system = `あなたは INSTYLE GROUP の採用カルチャーテスト Part 2（記述）の採点アシスタントです。1 設問ずつ、ルーブリックに厳密に従って 10 / 7 / 4 / 0 の 4 段階で採点してください。判定は INSTYLE の思想（自責・素直・貢献・正直さ・順番意識）への接続度を重視します。
+  const system = `あなたは INSTYLE GROUP の採用カルチャーテスト Part 2（記述）の採点アシスタントです。1 設問ずつ、ルーブリックに沿って 0 から 10 の整数（1 点刻み）で採点してください。判定は INSTYLE の思想（自責・素直・貢献・正直さ・順番意識）への接続度を重視します。
 
-採点ルール：
+採点の枠組み（アンカー）：
 - 10 点：合格 — 思想と接続し、具体的で、自責の視点があり、経験が実在する。
 - 7 点：方向は正しいが、具体性・深さ・思想接続が薄い。
 - 4 点：不十分だが、改善する意志と具体的な改善案がある（加点対象）。
-- 0 点：NG — 思想ズレ大、抽象論のみ、建前回答、AI・テンプレ対策の疑い。
+- 0 点：完全な無回答、または空欄／「特になし」のみ。
+
+絶対ルール：
+- 回答テキストが空・無回答・「特になし」程度の場合のみ 0 点。
+- 何かしらの内容（自分の経験や考えの記述）があれば最低 1 点を必ず付ける。
+- 上記アンカー（10/7/4）の間にある品質には、中間値（1〜3, 5・6, 8・9 など）を遠慮なく使う。
 
 文字数や所要時間も判定材料に使えますが、文字数が多いほど高得点とは限りません（薄く長い回答は減点）。
-出力は必ず JSON のみで、他のテキストを含めないでください。フィールドは score (0|4|7|10) と reason (日本語 200 字以内) の 2 つです。`;
+出力は必ず JSON のみで、他のテキストを含めないでください。フィールドは score（0〜10 の整数）と reason（日本語 200 字以内）の 2 つです。`;
 
   const user = `# 設問
 ${detail.qNum}（${detail.theme}） — ${detail.philosophy}
@@ -56,9 +61,10 @@ ${body || "（無回答）"}
 """
 
 # 採点
-ルーブリックに照らして 10 / 7 / 4 / 0 のいずれかを返してください。理由は具体的に、評価ポイントとなった一文を引用しながら 200 字以内でまとめてください。
+ルーブリックのアンカー（10/7/4/0）と中間値も使って 0〜10 の整数を返してください。
+回答に何かしら内容があれば最低 1 点、空欄なら 0。理由は具体的に、評価ポイントとなった一文を引用しながら 200 字以内でまとめてください。
 
-応答は JSON のみ：{"score": 10, "reason": "..."}`;
+応答は JSON のみ：{"score": 7, "reason": "..."}`;
 
   return { system, user };
 }

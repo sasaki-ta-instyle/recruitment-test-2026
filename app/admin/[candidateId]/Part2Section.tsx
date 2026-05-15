@@ -18,7 +18,10 @@ type Part2AnswerLite = {
   aiScoredAt: string | null;
 };
 
-const SCORE_OPTIONS = [10, 7, 4, 0] as const;
+// 0–10 の 1 点刻み。0=無回答、1+=何か書いてあれば最低 1 点。
+// 10/7/4/0 はガイド由来のアンカー値（背景色で薄く強調）。
+const SCORE_OPTIONS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10] as const;
+const SCORE_ANCHORS = new Set([0, 4, 7, 10]);
 const MAX_TOTAL = 100;
 
 function fmtElapsed(sec: number): string {
@@ -155,16 +158,17 @@ export function Part2Section({
             <div className="part2-question">{q.text}</div>
             <div className="part2-body">{a?.bodyText ?? "（無回答）"}</div>
 
-            <div className="score-picker" role="radiogroup" aria-label={`${q.id} 採点`}>
+            <div className="score-picker score-picker-11" role="radiogroup" aria-label={`${q.id} 採点`}>
               {SCORE_OPTIONS.map((v) => {
                 const selected = current === v;
+                const isAnchor = SCORE_ANCHORS.has(v);
                 return (
                   <button
                     key={v}
                     type="button"
                     role="radio"
                     aria-checked={selected}
-                    className={`score-button${selected ? " is-selected" : ""}`}
+                    className={`score-button${selected ? " is-selected" : ""}${isAnchor ? " is-anchor" : ""}`}
                     onClick={() => handlePick(q.id, v)}
                     disabled={isPending}
                   >

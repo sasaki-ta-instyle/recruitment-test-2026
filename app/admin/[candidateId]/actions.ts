@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { PART2 } from "@/lib/questions";
 
-const ALLOWED = new Set([0, 4, 7, 10]);
+const ALLOWED = new Set([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
 const VALID_QUESTION_IDS = new Set(PART2.map((q) => q.id));
 
 export async function saveScore(input: {
@@ -19,7 +19,7 @@ export async function saveScore(input: {
     return { ok: false, error: "invalid questionId" };
   }
   if (input.score !== null && !ALLOWED.has(input.score)) {
-    return { ok: false, error: "score must be one of 0/4/7/10 or null" };
+    return { ok: false, error: "score must be an integer 0–10 or null" };
   }
 
   await prisma.part2Answer.update({

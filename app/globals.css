@@ -1243,6 +1243,24 @@ button:focus-visible { outline: 2px solid var(--color-info); outline-offset: 2px
   transition: background var(--t-fast), color var(--t-fast);
   font-variant-numeric: tabular-nums;
 }
+/* 11 段階用のコンパクトボタン */
+.score-picker-11 { gap: 4px; }
+.score-picker-11 .score-button {
+  min-width: 36px;
+  min-height: 36px;
+  padding: 6px 8px;
+  font-size: 0.875rem;
+  background: var(--color-bg);
+}
+.score-picker-11 .score-button.is-anchor {
+  /* 0/4/7/10 はガイド由来のアンカー値として薄く色付け */
+  background: var(--color-surface-2);
+}
+.score-picker-11 .score-button.is-selected,
+.score-picker-11 .score-button.is-anchor.is-selected {
+  background: var(--color-text);
+  color: var(--color-text-inverse);
+}
 .score-button:hover:not(:disabled):not(.is-selected) { background: var(--color-surface-2); }
 .score-button.is-selected { background: var(--color-text); color: var(--color-text-inverse); }
 .score-button:focus-visible { outline: 2px solid var(--color-info); outline-offset: 2px; }
