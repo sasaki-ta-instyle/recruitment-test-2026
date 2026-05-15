@@ -1077,12 +1077,12 @@ button:focus-visible { outline: 2px solid var(--color-info); outline-offset: 2px
 /* ── Part 2 採点 UI ───────────────────────────────────── */
 .part2-header {
   display: flex;
-  justify-content: space-between;
   align-items: flex-end;
   gap: 16px;
   margin-bottom: 16px;
   flex-wrap: wrap;
 }
+.part2-header > .part2-totals-group { margin-left: auto; }
 .part2-title {
   font-size: 1.125rem;
   font-weight: 600;
