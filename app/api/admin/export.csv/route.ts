@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { PART2 } from "@/lib/questions";
 import {
+  AXIS_DISPLAY_ORDER,
   AXIS_NAMES,
   MATCH_LABEL,
   VERDICT_LABEL,
@@ -45,10 +46,7 @@ export async function GET() {
     "受験日時",
     "氏名",
     "受験者ID",
-    `${AXIS_NAMES[0]}(net)`,
-    `${AXIS_NAMES[1]}(net)`,
-    `${AXIS_NAMES[2]}(net)`,
-    `${AXIS_NAMES[3]}(net)`,
+    ...AXIS_DISPLAY_ORDER.map((i) => `${AXIS_NAMES[i]}(net)`),
     "ビット",
     "タイプ",
     "判定",
@@ -75,14 +73,14 @@ export async function GET() {
     const answered = c.part2Answers.filter((a) => a.score !== null).length;
 
     const s = c.score;
+    const axisValuesByIndex: Array<string | number> = s
+      ? [s.axisSelf, s.axisSunao, s.axisContrib, s.axisPositive]
+      : ["", "", "", ""];
     const cells: Array<string | number> = [
       fmtDateTime(c.submittedAt),
       c.name,
       c.id,
-      s ? s.axisSelf : "",
-      s ? s.axisSunao : "",
-      s ? s.axisContrib : "",
-      s ? s.axisPositive : "",
+      ...AXIS_DISPLAY_ORDER.map((i) => axisValuesByIndex[i]),
       s ? s.bitKey : "",
       s ? s.typeName : "",
       s ? VERDICT_LABEL[s.verdict as Verdict] ?? s.verdict : "",

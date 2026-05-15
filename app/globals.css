@@ -1253,11 +1253,16 @@ button:focus-visible { outline: 2px solid var(--color-info); outline-offset: 2px
   background: var(--color-bg);
 }
 .score-picker-11 .score-button.is-anchor {
-  /* 0/4/7/10 はガイド由来のアンカー値として薄く色付け */
-  background: var(--color-surface-2);
+  /* 0/4/7/10 はガイド由来のアンカー値だが、視覚的には白で扱う */
+  background: var(--color-bg);
+}
+.score-picker-11 .score-button.is-ai-score {
+  /* AI が付けた点数のセルをグレーで強調 */
+  background: #e8e8e6;
 }
 .score-picker-11 .score-button.is-selected,
-.score-picker-11 .score-button.is-anchor.is-selected {
+.score-picker-11 .score-button.is-anchor.is-selected,
+.score-picker-11 .score-button.is-ai-score.is-selected {
   background: var(--color-text);
   color: var(--color-text-inverse);
 }

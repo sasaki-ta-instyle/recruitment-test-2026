@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { PART1, PART2, type Part1Question } from "@/lib/questions";
 import {
+  AXIS_DISPLAY_ORDER,
   AXIS_LABELS,
   AXIS_NAMES,
   MATCH_LABEL,
@@ -168,7 +169,8 @@ export default async function CandidateDetailPage({
             )}
           </div>
           <div className="admin-axes-grid">
-            {axisNet.map((net, i) => {
+            {AXIS_DISPLAY_ORDER.map((i) => {
+              const net = axisNet[i];
               const tier = tiers[i];
               const pct = Math.max(5, Math.min(95, Math.round(((net + 20) / 40) * 100)));
               const fillLeft = net >= 0 ? 50 : pct;

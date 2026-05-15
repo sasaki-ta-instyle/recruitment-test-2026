@@ -6,6 +6,12 @@ import type { Pole } from "./questions";
 // AXIS_LABELS[i][0] が左（負側）、AXIS_LABELS[i][1] が右（正側）
 export const AXIS_NAMES = ["他責 / 自責", "素直さ", "貢献の視点", "ネガ / ポジ"] as const;
 
+// 表示優先順位：素直 ＞ 自他 ＝ 貢献 ＞ ポジネガ
+// 内部の axisNet / TYPE_MAP / bit 列は [自他, 素直, 貢献, ポジネガ] の
+// インデックス順を保持しつつ、UI 一覧やテーブルではこの並び順で表示する。
+// 値は axisNet（および AXIS_NAMES）への index。
+export const AXIS_DISPLAY_ORDER = [1, 0, 2, 3] as const;
+
 export const AXIS_LABELS: ReadonlyArray<readonly [string, string]> = [
   ["他責傾向", "自責傾向"],
   ["素直じゃない", "素直"],

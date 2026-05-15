@@ -162,13 +162,14 @@ export function Part2Section({
               {SCORE_OPTIONS.map((v) => {
                 const selected = current === v;
                 const isAnchor = SCORE_ANCHORS.has(v);
+                const isAiScore = a?.aiScore === v;
                 return (
                   <button
                     key={v}
                     type="button"
                     role="radio"
                     aria-checked={selected}
-                    className={`score-button${selected ? " is-selected" : ""}${isAnchor ? " is-anchor" : ""}`}
+                    className={`score-button${selected ? " is-selected" : ""}${isAnchor ? " is-anchor" : ""}${isAiScore ? " is-ai-score" : ""}`}
                     onClick={() => handlePick(q.id, v)}
                     disabled={isPending}
                   >

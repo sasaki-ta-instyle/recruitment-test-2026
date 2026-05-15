@@ -3,6 +3,7 @@ import Link from "next/link";
 import { PART1, PART2 } from "@/lib/questions";
 import { PART2_DETAIL } from "@/lib/part2Rubric";
 import {
+  AXIS_DISPLAY_ORDER,
   AXIS_LABELS,
   AXIS_NAMES,
   MATCH_LABEL,
@@ -133,9 +134,9 @@ export default function AdminReferencePage() {
           <li>
             <strong>STEP 2：4 軸ネット</strong> — 対になる傾向ペアの差分。
             <ul className="ref-ul">
-              {AXIS_NAMES.map((name, i) => (
+              {AXIS_DISPLAY_ORDER.map((i) => (
                 <li key={i}>
-                  <span className="ref-axis-name">{name}</span> ＝ {AXIS_LABELS[i][1]} − {AXIS_LABELS[i][0]}
+                  <span className="ref-axis-name">{AXIS_NAMES[i]}</span> ＝ {AXIS_LABELS[i][1]} − {AXIS_LABELS[i][0]}
                 </li>
               ))}
             </ul>
