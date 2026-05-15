@@ -32,23 +32,25 @@ export const VERDICT_LABEL: Record<Verdict, string> = {
 
 export type TypeInfo = { name: string; verdict: Verdict; desc: string };
 
+// ビット列の並び順は [素直][自他][貢献][ポジネガ]（重要度順）
+// 1 = 正の傾向（素直 / 自責 / 貢献あり / ポジ）、0 = 負の傾向
 export const TYPE_MAP: Record<string, TypeInfo> = {
-  "1111": { name: "王道フィット型", verdict: "good-deep", desc: "4軸すべて正の傾向。INSTYLEど真ん中。リーダー候補。" },
-  "1110": { name: "堅実リスク管理型", verdict: "good-deep", desc: "自走 × チーム × リスク直視。地に足の着いた貢献者。" },
-  "1101": { name: "自走型個人プレイヤー", verdict: "good", desc: "自走力高く明るい。専門職・個人成果型ポジションで活きる。" },
-  "1100": { name: "職人型", verdict: "good", desc: "自走 × 個人深掘り × リスク管理。スペシャリスト向き。" },
-  "1011": { name: "成果は出すが頭打ち型", verdict: "review", desc: "動く・貢献意欲あるがフィードバック取り込まず。中長期で停滞。" },
-  "1010": { name: "頑固な実績者型", verdict: "review", desc: "自走 × 流儀重視 × チーム × リスク管理。型が確立した業務向き。" },
-  "1001": { name: "個人プレイ志向の頑固型", verdict: "review", desc: "自走 × 流儀重視 × 個人 × ポジ。完全独立タスク向き。" },
-  "1000": { name: "閉じた専門家タイプ", verdict: "review", desc: "自走 × 流儀重視 × 個人深掘り × リスク管理。研究職向き。" },
-  "0111": { name: "明るい熱量型", verdict: "develop", desc: "明るく素直、貢献意欲あり。自走力が弱い。要メンター育成。" },
-  "0110": { name: "批評家・文句屋型", verdict: "warn", desc: "他責 × 暗 × チーム志向。組織への負の影響大。" },
-  "0101": { name: "明るい他責型", verdict: "warn", desc: "明るいが自走せず、貢献意識も薄い。INSTYLE的にはミスマッチ。" },
-  "0100": { name: "受動的悲観型", verdict: "warn", desc: "自走せず、貢献せず、悲観的。組織貢献は期待しにくい。" },
-  "0011": { name: "派手な自己中型", verdict: "ng", desc: "動くが他責 × 固執 × ポジ。場をかき乱す可能性高い。" },
-  "0010": { name: "批判型自己中", verdict: "ng", desc: "他責 × 固執 × チーム志向 × ネガ。組織にとって扱いが難しい。" },
-  "0001": { name: "明るいフリーライダー", verdict: "ng", desc: "動かない、変わらない、貢献しない、明るいだけ。" },
-  "0000": { name: "暗いフリーライダー", verdict: "ng", desc: "すべての軸で負側。組織にとって最も避けるべきタイプ。" },
+  "1111": { name: "王道フィット型", verdict: "good-deep", desc: "4 軸すべて正の傾向。INSTYLE ど真ん中。リーダー候補。" },
+  "1110": { name: "堅実リスク管理型", verdict: "good-deep", desc: "素直 × 自走 × チーム貢献 × リスク直視。地に足の着いた貢献者・リーダー候補。" },
+  "1101": { name: "自走型個人プレイヤー", verdict: "good", desc: "素直で自走力が高く明るい。個人成果型ポジション・専門職で活きる。" },
+  "1100": { name: "職人肌スペシャリスト", verdict: "good", desc: "素直 × 自走 × 個人深掘り × リスク管理。スペシャリスト・職人職向き。" },
+  "1011": { name: "明るいチームプレイヤー", verdict: "develop", desc: "素直 × チーム貢献 × 明るい。自走力に伸びしろ、メンター育成で開花。" },
+  "1010": { name: "慎重派チームサポーター", verdict: "review", desc: "素直 × チーム志向。状況をネガティブに見やすい点は要観察。" },
+  "1001": { name: "楽観型サポーター", verdict: "review", desc: "素直 × 明るい。自走力と貢献意識に伸びしろ、要観察。" },
+  "1000": { name: "受け止め型サポーター", verdict: "review", desc: "素直に受け取る力はあるが、自走・貢献に伸びしろ。リスクを重く見る傾向、要観察。" },
+  "0111": { name: "自走型ベテラン", verdict: "review", desc: "自走 × チーム貢献 × 明るい。フィードバック取り込みに伸びしろ、中長期育成。" },
+  "0110": { name: "信念型ベテラン", verdict: "review", desc: "自走 × チーム志向 × リスク重視。確立した自分の型を持つ。型のある業務向き。" },
+  "0101": { name: "独立スペシャリスト", verdict: "review", desc: "自走 × 明るい × 独自路線。完全独立タスク・個人成果型で価値発揮。" },
+  "0100": { name: "研究者タイプ", verdict: "review", desc: "自走 × 独自スタイル × 個人深掘り × リスク管理。研究職・職人職向き。" },
+  "0011": { name: "自由奔放型", verdict: "ng", desc: "動くが他責 × 流儀重視 × ポジ。場をかき乱す可能性が高い。" },
+  "0010": { name: "我流タイプ", verdict: "ng", desc: "他責 × 流儀重視 × チーム志向 × ネガ。組織にとって扱いが難しい。" },
+  "0001": { name: "楽天家フリーライダー", verdict: "ng", desc: "動かない・変わらない・貢献しない、明るいだけ。" },
+  "0000": { name: "受け身フリーライダー", verdict: "ng", desc: "すべての軸で負側。組織貢献は期待しにくい。" },
 };
 
 export type MatchStrength = "strong" | "clear" | "mid" | "weak" | "hold";
@@ -101,7 +103,8 @@ export function scoreAxes(p: PoleScores): [number, number, number, number] {
 }
 
 export function judge(axisNet: [number, number, number, number]) {
-  const bits = axisNet.map((n) => (n >= 0 ? 1 : 0)).join("");
+  // ビット列は AXIS_DISPLAY_ORDER（[素直][自他][貢献][ポジネガ]）で生成
+  const bits = AXIS_DISPLAY_ORDER.map((i) => (axisNet[i] >= 0 ? 1 : 0)).join("");
   const type = TYPE_MAP[bits] ?? TYPE_MAP["0000"];
   const neutralCount = axisNet.filter((n) => n >= -4 && n <= 4).length;
   const allTen = axisNet.every((n) => Math.abs(n) >= 10);
@@ -113,7 +116,7 @@ export function judge(axisNet: [number, number, number, number]) {
   else if (neutralCount === 2) matchStrength = "weak";
   else matchStrength = "hold";
 
-  // 絶対 NG：自他 × 素直 の両方が負側
+  // 絶対 NG：素直 × 自他 の両方が負側（bits[0]=素直, bits[1]=自他）
   const absoluteNg = bits[0] === "0" && bits[1] === "0";
 
   return { bits, type, matchStrength, absoluteNg, neutralCount };

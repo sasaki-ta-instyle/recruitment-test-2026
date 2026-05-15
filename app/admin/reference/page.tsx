@@ -62,16 +62,9 @@ const PART1_INTENT: string[] = [
   "成功パターンの共有範囲 × 期待値の置き方（再現上振れ／前提検証）。",
 ];
 
-// 内部の bit 列は [自他][素直][貢献][ポジネガ]。
-// 表示は AXIS_DISPLAY_ORDER（素直＞自他＝貢献＞ポジネガ）に並び替える。
-function toDisplayBits(bits: string): string {
-  return AXIS_DISPLAY_ORDER.map((i) => bits[i]).join("");
-}
-
 export default function AdminReferencePage() {
-  const bitsKeys = Object.keys(TYPE_MAP).sort((a, b) =>
-    toDisplayBits(b).localeCompare(toDisplayBits(a)),
-  );
+  // TYPE_MAP のキーは [素直][自他][貢献][ポジネガ] の重要度順なので、降順ソートで意図通り並ぶ
+  const bitsKeys = Object.keys(TYPE_MAP).sort().reverse();
 
   return (
     <main className="wide-shell">
@@ -167,7 +160,7 @@ export default function AdminReferencePage() {
             <strong>STEP 5：マッチ強度</strong> — 中立軸の数と ±10 到達数でクリアさを 5 段階に分類する。
           </li>
           <li>
-            <strong>絶対 NG ルール</strong> — 自他軸 × 素直軸の両方が負側のとき、自動的に「絶対 NG 該当」フラグを立てる。
+            <strong>絶対 NG ルール</strong> — 素直軸 × 自他軸の両方が負側のとき、自動的に「絶対 NG 該当」フラグを立てる。
           </li>
         </ol>
       </section>
@@ -175,7 +168,7 @@ export default function AdminReferencePage() {
       <section className="admin-card">
         <h2 className="ref-h2">16 タイプ判定表</h2>
         <p className="ref-desc">
-          行は重要度順（<strong>素直 ＞ 自他 ＝ 貢献 ＞ ポジネガ</strong>）にソート。ビット列自体は内部定義どおり <strong>[自他][素直][貢献][ポジネガ]</strong>（1＝正の傾向、0＝負の傾向）— CSV エクスポートの bitKey もこの並びです。
+          ビット列の順序は重要度順に <strong>[素直][自他][貢献][ポジネガ]</strong>（1＝正の傾向、0＝負の傾向）。
         </p>
         <table className="admin-table ref-table">
           <thead>

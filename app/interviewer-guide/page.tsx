@@ -112,7 +112,7 @@ export default function InterviewerGuidePage() {
         <span className="eyebrow">Section 2</span>
         <h2>判定マトリクス（16 タイプ俯瞰）</h2>
         <p className="section-desc">
-          タイプコードは <b>[自他][素直][貢献][ポジネガ]</b> の 4 ビット。1 = 正の傾向（自責 / 素直 / 貢献あり / ポジ）、0 = 負の傾向。
+          タイプコードは重要度順に <b>[素直][自他][貢献][ポジネガ]</b> の 4 ビット。1 = 正の傾向（素直 / 自責 / 貢献あり / ポジ）、0 = 負の傾向。
         </p>
         <table className="guide-table">
           <thead>
@@ -211,11 +211,11 @@ export default function InterviewerGuidePage() {
         <ol>
           <li>
             <b>Step 1 — Part 1 集計：</b>
-            8 つの傾向スコアから 4 軸ネット（−20〜+20）を算出。タイプコード [自他][素直][貢献][ポジネガ] を作る。
+            8 つの傾向スコアから 4 軸ネット（−20〜+20）を算出。タイプコード [素直][自他][貢献][ポジネガ] を作る。
           </li>
           <li>
             <b>Step 2 — NG ゾーン判定：</b>
-            タイプコードが <code>00**</code> に該当（自他＝0 かつ 素直＝0）なら、貢献・ポジネガを問わず採用見送り。
+            タイプコードが <code>00**</code> に該当（素直＝0 かつ 自他＝0）なら、貢献・ポジネガを問わず採用見送り。
             Part 2 採点せず終了。
           </li>
           <li>
