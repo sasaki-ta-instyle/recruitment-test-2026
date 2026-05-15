@@ -168,7 +168,7 @@ export default function AdminReferencePage() {
       <section className="admin-card">
         <h2 className="ref-h2">16 タイプ判定表</h2>
         <p className="ref-desc">
-          ビット列の順序は重要度順に <strong>[素直][自他][貢献][ポジネガ]</strong>（1＝正の傾向、0＝負の傾向）。
+          ビット列の順序は重要度順に <strong>[素直][自他][貢献][ポジネガ]</strong>（<strong>素直 ＞ 自他 ＝ 貢献 ＞ ポジネガ</strong>）。1＝正の傾向、0＝負の傾向。
         </p>
         <table className="admin-table ref-table">
           <thead>
