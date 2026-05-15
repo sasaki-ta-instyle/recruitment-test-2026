@@ -91,12 +91,29 @@ export default async function CandidateDetailPage({
     0,
   );
   const part2HumanAnswered = c.part2Answers.filter((a) => a.score !== null).length;
+  // Part 2 AI 採点合計
+  const part2AiScore = c.part2Answers.reduce<number>(
+    (sum, a) => sum + (typeof a.aiScore === "number" ? a.aiScore : 0),
+    0,
+  );
+  const part2AiAnswered = c.part2Answers.filter((a) => a.aiScore !== null).length;
+
   const finalResult = computeFinalVerdict({
     part1Verdict: (c.score?.verdict as Verdict) ?? null,
     absoluteNg: c.score?.absoluteNg ?? false,
     part2Score: part2HumanScore,
     part2Answered: part2HumanAnswered,
   });
+  const aiFinalResult = computeFinalVerdict({
+    part1Verdict: (c.score?.verdict as Verdict) ?? null,
+    absoluteNg: c.score?.absoluteNg ?? false,
+    part2Score: part2AiScore,
+    part2Answered: part2AiAnswered,
+  });
+  const verdictsDiverge =
+    finalResult.verdict !== null &&
+    aiFinalResult.verdict !== null &&
+    finalResult.verdict !== aiFinalResult.verdict;
   // 総合判定バッジに使う verdict 色マッピング
   const FINAL_BADGE_VERDICT: Record<string, Verdict> = {
     "accept-strong": "good-deep",
@@ -179,28 +196,20 @@ export default async function CandidateDetailPage({
       <section className="admin-card final-verdict-card">
         <div className="final-verdict-header">
           <h2 className="admin-section-title" style={{ marginBottom: 0 }}>総合判定</h2>
-          {finalResult.verdict ? (
-            <span
-              className={`verdict-badge verdict-${FINAL_BADGE_VERDICT[finalResult.verdict]}`}
-              style={{ marginTop: 0 }}
-            >
-              {FINAL_VERDICT_LABEL[finalResult.verdict]}
-            </span>
-          ) : (
-            <span className="match-pill">未確定</span>
+          {verdictsDiverge && (
+            <span className="final-verdict-divergence">人手 / AI で判定が分かれています</span>
           )}
         </div>
+
         <div className="final-verdict-inputs">
           <div className="final-verdict-cell">
             <span className="final-verdict-label">Part 1 タイプ</span>
             <span className="final-verdict-value">
               {c.score?.typeName ?? "—"}
               {c.score && (
-                <>
-                  <span className={`verdict-badge verdict-${c.score.verdict}`} style={{ marginTop: 0, marginLeft: 8 }}>
-                    {VERDICT_LABEL[c.score.verdict as Verdict]}
-                  </span>
-                </>
+                <span className={`verdict-badge verdict-${c.score.verdict}`} style={{ marginTop: 0, marginLeft: 8 }}>
+                  {VERDICT_LABEL[c.score.verdict as Verdict]}
+                </span>
               )}
             </span>
           </div>
@@ -216,11 +225,61 @@ export default async function CandidateDetailPage({
               </span>
             </span>
           </div>
+          <div className="final-verdict-cell">
+            <span className="final-verdict-label">Part 2 AI 合計</span>
+            <span className="final-verdict-value">
+              <strong style={{ fontSize: "1.25rem", fontFamily: "var(--font-display)" }}>
+                {part2AiScore}
+              </strong>{" "}
+              / 100
+              <span className="final-verdict-meta" style={{ marginLeft: 8 }}>
+                （AI 採点済 {part2AiAnswered} / 10）
+              </span>
+            </span>
+          </div>
         </div>
-        <p className="final-verdict-reason">{finalResult.reason}</p>
-        {finalResult.verdict && (
-          <p className="final-verdict-desc">{FINAL_VERDICT_DESC[finalResult.verdict]}</p>
-        )}
+
+        <div className="final-verdict-grid">
+          <div className="final-verdict-pane final-verdict-pane-human">
+            <div className="final-verdict-pane-head">
+              <span className="final-verdict-pane-label">人手ベース総合判定</span>
+              {finalResult.verdict ? (
+                <span
+                  className={`verdict-badge verdict-${FINAL_BADGE_VERDICT[finalResult.verdict]}`}
+                  style={{ marginTop: 0 }}
+                >
+                  {FINAL_VERDICT_LABEL[finalResult.verdict]}
+                </span>
+              ) : (
+                <span className="match-pill">未確定</span>
+              )}
+            </div>
+            <p className="final-verdict-reason">{finalResult.reason}</p>
+            {finalResult.verdict && (
+              <p className="final-verdict-desc">{FINAL_VERDICT_DESC[finalResult.verdict]}</p>
+            )}
+          </div>
+
+          <div className="final-verdict-pane final-verdict-pane-ai">
+            <div className="final-verdict-pane-head">
+              <span className="final-verdict-pane-label">AI ベース総合判定</span>
+              {aiFinalResult.verdict ? (
+                <span
+                  className={`verdict-badge verdict-${FINAL_BADGE_VERDICT[aiFinalResult.verdict]}`}
+                  style={{ marginTop: 0 }}
+                >
+                  {FINAL_VERDICT_LABEL[aiFinalResult.verdict]}
+                </span>
+              ) : (
+                <span className="match-pill">未確定</span>
+              )}
+            </div>
+            <p className="final-verdict-reason">{aiFinalResult.reason}</p>
+            {aiFinalResult.verdict && (
+              <p className="final-verdict-desc">{FINAL_VERDICT_DESC[aiFinalResult.verdict]}</p>
+            )}
+          </div>
+        </div>
       </section>
 
       <section className="admin-card">

@@ -1358,9 +1358,47 @@ button:focus-visible { outline: 2px solid var(--color-info); outline-offset: 2px
 }
 .final-verdict-inputs {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(3, 1fr);
   gap: 12px 24px;
-  margin-bottom: 12px;
+  margin-bottom: 16px;
+}
+.final-verdict-divergence {
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--color-warning);
+  background: rgba(212, 119, 44, 0.12);
+  padding: 4px 10px;
+  border-radius: var(--r-pill);
+}
+.final-verdict-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+.final-verdict-pane {
+  background: var(--color-bg);
+  border-radius: var(--r-sm);
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.final-verdict-pane-ai { background: rgba(56, 83, 123, 0.05); }
+.final-verdict-pane-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.final-verdict-pane-label {
+  font-family: var(--font-display);
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
 }
 .final-verdict-cell {
   display: flex;
@@ -1403,6 +1441,7 @@ button:focus-visible { outline: 2px solid var(--color-info); outline-offset: 2px
 }
 @media (max-width: 768px) {
   .final-verdict-inputs { grid-template-columns: 1fr; }
+  .final-verdict-grid { grid-template-columns: 1fr; }
 }
 
 /* ── Admin: タブ／一括操作バー ─────────────────────── */
