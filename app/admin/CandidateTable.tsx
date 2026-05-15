@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useMemo, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { archiveCandidates, deleteCandidates, unarchiveCandidates } from "./actions";
+import { AXIS_DISPLAY_ORDER } from "@/lib/scoring";
 
 type SortKey =
   | "submittedAt"
@@ -15,11 +16,10 @@ type SortKey =
   | "elapsedSec";
 
 const VERDICT_ORDER: Record<string, number> = {
-  "good-deep": 6,
-  good: 5,
-  develop: 4,
-  review: 3,
-  warn: 2,
+  "good-deep": 5,
+  good: 4,
+  develop: 3,
+  review: 2,
   ng: 1,
 };
 const MATCH_ORDER: Record<string, number> = {
@@ -334,7 +334,9 @@ export function CandidateTable({
                     </td>
                     <td style={{ fontFamily: "var(--font-display)", fontSize: "0.8125rem" }}>
                       {s
-                        ? `${signed(s.axisSelf)}/${signed(s.axisSunao)}/${signed(s.axisContrib)}/${signed(s.axisPositive)}`
+                        ? AXIS_DISPLAY_ORDER
+                            .map((i) => signed([s.axisSelf, s.axisSunao, s.axisContrib, s.axisPositive][i]))
+                            .join("/")
                         : "—"}
                     </td>
                     <td>{s?.typeName ?? "—"}</td>

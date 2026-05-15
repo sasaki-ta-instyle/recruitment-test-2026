@@ -119,14 +119,6 @@ export function computeFinalVerdict(input: {
               ? "Part 1 要観察 + Part 2 中位。タイプの弱点が補えるか 2 次で確認。"
               : "Part 1 要観察 + Part 2 低得点。見送り推奨。",
       };
-    case "warn":
-      return {
-        verdict: band === "high" ? "review-negative" : "reject",
-        reason:
-          band === "high"
-            ? "Part 1 要警戒 + Part 2 高得点。深掘りで本人の意志を確認するが、見送り寄り。"
-            : "Part 1 要警戒 + Part 2 中位以下。見送り推奨。",
-      };
     case "ng":
       return {
         verdict: "reject",

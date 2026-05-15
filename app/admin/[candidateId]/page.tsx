@@ -121,7 +121,7 @@ export default async function CandidateDetailPage({
     accept: "good",
     "review-positive": "develop",
     review: "review",
-    "review-negative": "warn",
+    "review-negative": "review",
     reject: "ng",
   };
 

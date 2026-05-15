@@ -92,7 +92,7 @@ export default function InterviewerGuidePage() {
 
         <h3>絶対 NG ルール</h3>
         <p style={{ background: "rgba(181, 70, 43, 0.10)", color: "var(--color-error)", padding: "12px 16px", borderRadius: "var(--r)", margin: "12px 0" }}>
-          <b>NG ゾーン：</b>16 タイプの「自他＝− × 素直＝−」象限（00**：0000・0001・0010・0011）は採用見送り。
+          <b>NG ゾーン：</b>16 タイプの「素直＝− × 自他＝−」象限（00**：0000・0001・0010・0011）は採用見送り。
           問題が起きたとき外に原因を求め、指摘も受け取れず、組織への影響が最大化する組み合わせ。
         </p>
 
@@ -220,7 +220,7 @@ export default function InterviewerGuidePage() {
           </li>
           <li>
             <b>Step 3 — 16 タイプ判定 &amp; マッチ強度：</b>
-            タイプコードから 16 タイプを確定し、判定（採用推奨◎ / ○ / 育成△ / 要観察△ / 要警戒× / NG×）を決定。
+            タイプコードから 16 タイプを確定し、判定（採用推奨◎ / ○ / 育成△ / 要観察△ / NG×）を決定。
             同時にマッチ強度（強い／明確／中立軸あり／弱い／判定保留）を確認。
           </li>
           <li>

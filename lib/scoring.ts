@@ -19,14 +19,13 @@ export const AXIS_LABELS: ReadonlyArray<readonly [string, string]> = [
   ["ネガ", "ポジ"],
 ];
 
-export type Verdict = "good-deep" | "good" | "develop" | "review" | "warn" | "ng";
+export type Verdict = "good-deep" | "good" | "develop" | "review" | "ng";
 
 export const VERDICT_LABEL: Record<Verdict, string> = {
   "good-deep": "採用推奨◎",
   good: "採用推奨○",
   develop: "育成候補△",
   review: "要観察△",
-  warn: "要警戒×",
   ng: "NG×",
 };
 

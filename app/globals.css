@@ -563,7 +563,6 @@ button:focus-visible { outline: 2px solid var(--color-info); outline-offset: 2px
 .verdict-good      { background: #5C7A3F; color: #FFFFFF; }
 .verdict-develop   { background: #C19A2B; color: #FFFFFF; }
 .verdict-review    { background: #B5742B; color: #FFFFFF; }
-.verdict-warn      { background: #B5462B; color: #FFFFFF; }
 .verdict-ng        { background: #82837A; color: #FFFFFF; }
 
 .axis-list { background: var(--color-surface); border-radius: var(--r-sm); padding: 24px; margin-bottom: 16px; }
